@@ -429,6 +429,32 @@ html, body {
   box-shadow: 0 8px 24px rgba(20,16,8,0.05);
 }
 
+.quiz-context {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+.quiz-context-row strong {
+  color: var(--ink-faint);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-right: 8px;
+}
+.quiz-context-example .blank {
+  display: inline-block;
+  min-width: 60px;
+  border-bottom: 2px solid var(--ink-faint);
+  margin: 0 2px;
+}
+
 .quiz-options {
   display: grid;
   grid-template-columns: 1fr 1fr;

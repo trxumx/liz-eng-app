@@ -238,6 +238,9 @@
   const quizPromptLabel = document.getElementById("quiz-prompt-label");
   const quizPrompt = document.getElementById("quiz-prompt");
   const quizOptions = document.getElementById("quiz-options");
+  const quizContext = document.getElementById("quiz-context");
+  const quizContextSyn = document.getElementById("quiz-context-syn");
+  const quizContextEx = document.getElementById("quiz-context-ex");
   const quizTyping = document.getElementById("quiz-typing");
   const quizInput = document.getElementById("quiz-input");
   const quizSubmitBtn = document.getElementById("quiz-submit-btn");
@@ -254,6 +257,15 @@
       .toLowerCase()
       .replace(/[\.,!\?;:"']+/g, "")
       .replace(/\s+/g, " ");
+  }
+
+  function blankOutExample(html) {
+    // replace <mark>...</mark> with a blank line
+    return (html || "").replace(/<mark>[^<]*<\/mark>/gi, '<span class="blank">_____</span>');
+  }
+
+  function findWord(key) {
+    return words.find((w) => w.word === key) || null;
   }
 
   function pickRadio(name) {
@@ -363,6 +375,19 @@
       quizOptions.innerHTML = "";
       quizOptions.classList.add("hidden");
       quizTyping.classList.remove("hidden");
+
+      // Populate the English-meaning context (synonyms + cloze example)
+      const w = findWord(q.key);
+      if (w) {
+        const syn = (w.synonyms || []).join(", ");
+        quizContextSyn.innerHTML = syn ? `<strong>Means</strong> ${syn}` : "";
+        const ex = blankOutExample(w.example);
+        quizContextEx.innerHTML = ex ? `<strong>Example</strong> ${ex}` : "";
+        quizContext.classList.remove("hidden");
+      } else {
+        quizContext.classList.add("hidden");
+      }
+
       quizInput.value = "";
       quizInput.disabled = false;
       quizSubmitBtn.disabled = false;
@@ -370,6 +395,7 @@
       // give the DOM a tick so focus works on screen change
       setTimeout(() => quizInput.focus(), 30);
     } else {
+      quizContext.classList.add("hidden");
       quizTyping.classList.add("hidden");
       quizOptions.classList.remove("hidden");
       quizOptions.innerHTML = "";
@@ -434,6 +460,12 @@
     } else {
       quizFeedback.textContent = `Answer: ${q.answer}`;
       quizFeedback.className = "quiz-feedback wrong";
+    }
+
+    // Reveal the word in the example sentence
+    const w = findWord(q.key);
+    if (w && w.example) {
+      quizContextEx.innerHTML = `<strong>Example</strong> ${w.example}`;
     }
 
     quizState.answers.push({ q, picked: typed.trim() || "(empty)", correct });
