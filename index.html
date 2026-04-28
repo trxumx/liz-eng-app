@@ -33,21 +33,6 @@
           <div id="home-progress" class="page-sub"></div>
         </header>
 
-        <!-- Gamification status strip -->
-        <div class="status-strip">
-          <div class="status-cell status-level">
-            <div class="status-label">Level</div>
-            <div class="status-value" id="status-level">1</div>
-          </div>
-          <div class="status-cell status-xp">
-            <div class="status-xp-row">
-              <span class="status-label">XP</span>
-              <span class="status-xp-text" id="status-xp-text">0 / 50</span>
-            </div>
-            <div class="status-bar"><div class="status-bar-fill" id="status-xp-fill"></div></div>
-          </div>
-        </div>
-
         <div class="deck-banner">
           <div>
             <span class="deck-banner-label">Deck</span>
@@ -68,12 +53,6 @@
           <button class="menu-card" data-go="stats">
             <div class="menu-title">Statistics</div>
             <div class="menu-desc">See progress and weakest words.</div>
-          </button>
-          <button class="menu-card" data-go="achievements">
-            <div class="menu-title">Achievements
-              <span class="menu-badge" id="menu-achievements-count"></span>
-            </div>
-            <div class="menu-desc">Badges and milestones.</div>
           </button>
           <button class="menu-card menu-card--ghost" id="reset-btn">
             <div class="menu-title">Reset progress</div>
@@ -259,17 +238,6 @@
         </div>
       </section>
 
-      <!-- 8. Achievements -->
-      <section data-view="achievements" class="screen hidden">
-        <header class="page-header">
-          <button class="ghost-btn" data-go="home">&larr; Home</button>
-          <div class="page-title-inline">Achievements</div>
-          <div class="header-spacer"></div>
-        </header>
-        <div class="achv-summary" id="achv-summary"></div>
-        <div class="achv-grid" id="achv-grid"></div>
-      </section>
-
       <!-- 7. Stats -->
       <section data-view="stats" class="screen hidden">
         <header class="page-header">
@@ -307,9 +275,6 @@
         </div>
       </section>
     </main>
-
-    <!-- Toast layer -->
-    <div id="toast-layer" class="toast-layer" aria-live="polite" aria-atomic="true"></div>
 
     <script src="app.js"></script>
   </body>
