@@ -4,18 +4,32 @@
   // ---------- Storage ----------
   const STORAGE_KEY = "liz-vocab:v1";
 
+  function defaultStore() {
+    return {
+      words: {},
+      sessions: [],
+      xp: 0,
+      achievements: {}, // { id: ISOdate }
+      counters: { typingCorrect: 0 },
+    };
+  }
+
   function loadStorage() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return { words: {}, sessions: [] };
+      if (!raw) return defaultStore();
       const parsed = JSON.parse(raw);
+      const def = defaultStore();
       return {
-        words: parsed.words || {},
-        sessions: parsed.sessions || [],
+        words: parsed.words || def.words,
+        sessions: parsed.sessions || def.sessions,
+        xp: typeof parsed.xp === "number" ? parsed.xp : def.xp,
+        achievements: parsed.achievements || def.achievements,
+        counters: parsed.counters || def.counters,
       };
     } catch (e) {
       console.error("Failed to load storage", e);
-      return { words: {}, sessions: [] };
+      return defaultStore();
     }
   }
 
@@ -32,6 +46,7 @@
       store.words[key] = {
         viewed: false,
         known: false,
+        knownAwarded: false,
         seen: 0,
         attempts: 0,
         correct: 0,
@@ -41,25 +56,185 @@
     return store.words[key];
   }
 
+  // ---------- Gamification ----------
+  function levelInfo(xp) {
+    // Total XP needed to reach level N = 25 * (N-1) * N
+    let level = 1;
+    while (25 * level * (level + 1) <= xp) level++;
+    const start = 25 * (level - 1) * level;
+    const end = 25 * level * (level + 1);
+    return { level, start, end, progress: xp - start, needed: end - start };
+  }
+
+  function awardXP(amount, reason) {
+    if (!amount) return;
+    const before = levelInfo(store.xp);
+    store.xp += amount;
+    const after = levelInfo(store.xp);
+    saveStorage();
+    showToast({
+      kind: "xp",
+      emoji: "✨",
+      title: `+${amount} XP`,
+      sub: reason || "",
+    });
+    if (after.level > before.level) {
+      showToast({
+        kind: "level",
+        emoji: "🚀",
+        title: `Level ${after.level}!`,
+        sub: `Keep going — next level at ${after.end} XP`,
+      });
+    }
+    renderHomeStatus();
+  }
+
+  // ---------- Achievements ----------
+  const ACHIEVEMENTS = [
+    { id: "first_view",   emoji: "🌱", title: "First Steps",    desc: "View your first card",
+      check: () => totalViewed() >= 1 },
+    { id: "bookworm",     emoji: "📖", title: "Bookworm",       desc: "View 25 different words",
+      check: () => totalViewed() >= 25 },
+    { id: "polyglot",     emoji: "🧠", title: "Polyglot",       desc: "View 50 different words",
+      check: () => totalViewed() >= 50 },
+    { id: "completionist",emoji: "🏛️", title: "Completionist",  desc: "View every word in the dictionary",
+      check: () => words.length > 0 && totalViewed() >= words.length },
+    { id: "quiz_starter", emoji: "🎯", title: "Quiz Starter",   desc: "Finish your first quiz",
+      check: () => store.sessions.length >= 1 },
+    { id: "quiz_regular", emoji: "🎲", title: "Quiz Regular",   desc: "Finish 10 quizzes",
+      check: () => store.sessions.length >= 10 },
+    { id: "perfect_10",   emoji: "⭐", title: "Sharp Shooter",   desc: "Score 100% on a quiz of 10+ questions",
+      check: () => store.sessions.some((s) => s.total >= 10 && s.correct === s.total) },
+    { id: "speller_10",   emoji: "⌨️", title: "Speller",         desc: "Type 10 correct answers",
+      check: () => (store.counters.typingCorrect || 0) >= 10 },
+    { id: "speller_50",   emoji: "✍️", title: "Word Wizard",     desc: "Type 50 correct answers",
+      check: () => (store.counters.typingCorrect || 0) >= 50 },
+    { id: "collector_10", emoji: "🪙", title: "Word Collector", desc: "Mark 10 words as known",
+      check: () => totalKnown() >= 10 },
+    { id: "collector_30", emoji: "🏆", title: "Word Master",    desc: "Mark 30 words as known",
+      check: () => totalKnown() >= 30 },
+    { id: "theme_one",    emoji: "🎨", title: "Theme Tamer",    desc: "View every word in any theme",
+      check: () => themesFullyViewedCount() >= 1 },
+    { id: "theme_three",  emoji: "🎭", title: "Renaissance",    desc: "Fully view 3 different themes",
+      check: () => themesFullyViewedCount() >= 3 },
+  ];
+
+  function totalViewed() {
+    return words.filter((w) => statsFor(w.word).viewed).length;
+  }
+  function totalKnown() {
+    return words.filter((w) => statsFor(w.word).known).length;
+  }
+  function themesFullyViewedCount() {
+    const themes = new Set(words.map((w) => w.theme).filter(Boolean));
+    let count = 0;
+    themes.forEach((t) => {
+      const inTheme = words.filter((w) => w.theme === t);
+      if (inTheme.length && inTheme.every((w) => statsFor(w.word).viewed)) count++;
+    });
+    return count;
+  }
+
+  function checkAchievements({ silent = false } = {}) {
+    let newly = [];
+    for (const a of ACHIEVEMENTS) {
+      if (store.achievements[a.id]) continue;
+      try {
+        if (a.check()) {
+          store.achievements[a.id] = new Date().toISOString();
+          newly.push(a);
+        }
+      } catch (e) { /* defensive */ }
+    }
+    if (newly.length) {
+      saveStorage();
+      if (!silent) {
+        newly.forEach((a, i) => {
+          // small stagger so they don't pile
+          setTimeout(() => {
+            showToast({
+              kind: "achv",
+              emoji: a.emoji,
+              title: a.title,
+              sub: a.desc,
+              durationMs: 3500,
+            });
+          }, i * 300);
+        });
+      }
+      renderHomeStatus();
+    }
+    return newly.length;
+  }
+
+  // ---------- Toasts ----------
+  const toastLayer = document.getElementById("toast-layer");
+  let toastQueueDepth = 0;
+
+  function showToast({ kind = "xp", emoji = "", title = "", sub = "", durationMs = 1800 }) {
+    if (!toastLayer) return;
+    toastQueueDepth++;
+    const el = document.createElement("div");
+    el.className = `toast toast-${kind}`;
+    el.innerHTML = `
+      <div class="toast-emoji">${emoji}</div>
+      <div class="toast-body">
+        <div class="toast-title"></div>
+        ${sub ? '<div class="toast-sub"></div>' : ""}
+      </div>
+    `;
+    el.querySelector(".toast-title").textContent = title;
+    if (sub) el.querySelector(".toast-sub").textContent = sub;
+    toastLayer.appendChild(el);
+    setTimeout(() => {
+      el.classList.add("exiting");
+      setTimeout(() => {
+        el.remove();
+        toastQueueDepth = Math.max(0, toastQueueDepth - 1);
+      }, 220);
+    }, durationMs);
+  }
+
   function recordView(key) {
     const s = statsFor(key);
+    const wasViewed = s.viewed;
     s.viewed = true;
     s.seen += 1;
     s.lastSeen = Date.now();
     saveStorage();
+    if (!wasViewed) awardXP(2, `New word: ${key}`);
+    checkAchievements();
   }
 
   function setKnown(key, value) {
-    statsFor(key).known = !!value;
-    saveStorage();
+    const s = statsFor(key);
+    const willKnow = !!value;
+    s.known = willKnow;
+    if (willKnow && !s.knownAwarded) {
+      s.knownAwarded = true;
+      saveStorage();
+      awardXP(5, `Marked known: ${key}`);
+    } else {
+      saveStorage();
+    }
+    checkAchievements();
   }
 
-  function recordQuiz(key, correct) {
+  function recordQuiz(key, correct, mode) {
     const s = statsFor(key);
     s.attempts += 1;
     if (correct) s.correct += 1;
     s.lastSeen = Date.now();
     saveStorage();
+    if (correct) {
+      const xp = mode === "type" ? 5 : 3;
+      awardXP(xp, mode === "type" ? "Typed correctly" : "Correct answer");
+      if (mode === "type") {
+        store.counters.typingCorrect = (store.counters.typingCorrect || 0) + 1;
+        saveStorage();
+      }
+    }
+    checkAchievements();
   }
 
   function recordSession(mode, total, correct) {
@@ -70,10 +245,18 @@
       correct,
     });
     saveStorage();
+    // session bonus
+    const pct = total ? correct / total : 0;
+    let bonus = 0;
+    if (total >= 5 && pct === 1) bonus = 20;
+    else if (pct >= 0.8) bonus = 10;
+    else if (pct >= 0.5) bonus = 5;
+    if (bonus) awardXP(bonus, `Quiz finished (${correct}/${total})`);
+    checkAchievements();
   }
 
   function resetAll() {
-    store = { words: {}, sessions: [] };
+    store = defaultStore();
     saveStorage();
   }
 
@@ -113,6 +296,7 @@
     else if (name === "quiz-setup") {} // static form
     else if (name === "quiz") renderQuizQuestion();
     else if (name === "stats") renderStats();
+    else if (name === "achievements") renderAchievements();
     window.scrollTo(0, 0);
   }
 
@@ -141,45 +325,56 @@
   startBtn.addEventListener("click", () => show("home"));
 
   // ---------- Deck picker ----------
-  const deckSelect = document.getElementById("deck-select");
+  const deckChips = document.getElementById("deck-chips");
   const deckMeta = document.getElementById("deck-meta");
   const homeDeckName = document.getElementById("home-deck-name");
   const homeDeckCount = document.getElementById("home-deck-count");
 
-  function populateDeckSelect() {
+  function makeChip(value, label, count) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "deck-chip";
+    btn.dataset.value = value;
+    btn.setAttribute("role", "radio");
+    btn.setAttribute("aria-pressed", value === selectedTheme ? "true" : "false");
+    btn.innerHTML = `${label}<span class="chip-count">${count}</span>`;
+    btn.addEventListener("click", () => setSelectedTheme(value));
+    return btn;
+  }
+
+  function populateDeckChips() {
     const themes = Array.from(new Set(words.map((w) => w.theme).filter(Boolean))).sort();
-    // remove existing options except "all"
-    deckSelect.innerHTML = "";
-    const allOpt = document.createElement("option");
-    allOpt.value = "all";
-    allOpt.textContent = `All Words (${words.length})`;
-    deckSelect.appendChild(allOpt);
+    deckChips.innerHTML = "";
+    deckChips.appendChild(makeChip("all", "All Words", words.length));
     themes.forEach((t) => {
-      const count = words.filter((w) => w.theme === t).length;
-      const opt = document.createElement("option");
-      opt.value = t;
-      opt.textContent = `${t} (${count})`;
-      deckSelect.appendChild(opt);
+      const n = words.filter((w) => w.theme === t).length;
+      deckChips.appendChild(makeChip(t, t, n));
     });
-    deckSelect.value = selectedTheme;
+    refreshChipsState();
     updateDeckMeta();
+  }
+
+  function refreshChipsState() {
+    deckChips.querySelectorAll(".deck-chip").forEach((c) => {
+      c.setAttribute("aria-pressed", c.dataset.value === selectedTheme ? "true" : "false");
+    });
   }
 
   function updateDeckMeta() {
     const n = activeWords().length;
-    deckMeta.textContent = `${n} word${n === 1 ? "" : "s"}`;
+    deckMeta.textContent = `${n} word${n === 1 ? "" : "s"} in this deck`;
   }
 
   function setSelectedTheme(theme) {
     selectedTheme = theme;
     studyIndex = 0;
-    flashcard && flashcard.classList.remove("flipped");
-    deckSelect.value = theme;
+    if (typeof flashcard !== "undefined" && flashcard) {
+      flashcard.classList.remove("flipped");
+    }
+    refreshChipsState();
     updateDeckMeta();
     if (view === "home") renderHome();
   }
-
-  deckSelect.addEventListener("change", (e) => setSelectedTheme(e.target.value));
 
   // ---------- Home ----------
   function renderHome() {
@@ -193,6 +388,29 @@
     const active = activeWords();
     homeDeckName.textContent = deckLabel();
     homeDeckCount.textContent = `· ${active.length} word${active.length === 1 ? "" : "s"}`;
+
+    renderHomeStatus();
+    renderMenuBadgeCounts();
+  }
+
+  function renderHomeStatus() {
+    const info = levelInfo(store.xp);
+    const lvlEl = document.getElementById("status-level");
+    const xpText = document.getElementById("status-xp-text");
+    const xpFill = document.getElementById("status-xp-fill");
+    if (!lvlEl) return; // not on home
+
+    lvlEl.textContent = String(info.level);
+    xpText.textContent = `${info.progress} / ${info.needed}`;
+    const pct = info.needed ? (info.progress / info.needed) * 100 : 0;
+    xpFill.style.width = `${pct}%`;
+  }
+
+  function renderMenuBadgeCounts() {
+    const el = document.getElementById("menu-achievements-count");
+    if (!el) return;
+    const unlocked = Object.keys(store.achievements).length;
+    el.textContent = `${unlocked}/${ACHIEVEMENTS.length}`;
   }
 
   document.getElementById("reset-btn").addEventListener("click", () => {
@@ -518,7 +736,7 @@
     }
 
     quizState.answers.push({ q, picked, correct });
-    recordQuiz(q.key, correct);
+    recordQuiz(q.key, correct, q.mode);
     quizScoreEl.textContent = `${quizState.score}✓`;
     quizNextBtn.classList.remove("hidden");
     quizNextBtn.focus();
@@ -554,7 +772,7 @@
     }
 
     quizState.answers.push({ q, picked: typed.trim() || "(empty)", correct });
-    recordQuiz(q.key, correct);
+    recordQuiz(q.key, correct, q.mode);
     quizScoreEl.textContent = `${quizState.score}✓`;
     quizNextBtn.classList.remove("hidden");
     quizNextBtn.focus();
@@ -675,8 +893,44 @@
     }
   }
 
+  // ---------- Achievements screen ----------
+  function renderAchievements() {
+    const grid = document.getElementById("achv-grid");
+    const summary = document.getElementById("achv-summary");
+    if (!grid) return;
+    const unlocked = Object.keys(store.achievements).length;
+    const total = ACHIEVEMENTS.length;
+    const info = levelInfo(store.xp);
+    summary.innerHTML =
+      `<strong>${unlocked} / ${total}</strong> unlocked · ` +
+      `Level <strong>${info.level}</strong> · ` +
+      `<strong>${store.xp}</strong> XP`;
+
+    grid.innerHTML = "";
+    ACHIEVEMENTS.forEach((a) => {
+      const card = document.createElement("div");
+      const isUnlocked = !!store.achievements[a.id];
+      card.className = "achv-card " + (isUnlocked ? "unlocked" : "locked");
+      const dateStr = isUnlocked
+        ? new Date(store.achievements[a.id]).toLocaleDateString()
+        : "";
+      card.innerHTML = `
+        <div class="achv-emoji">${a.emoji}</div>
+        <div class="achv-title"></div>
+        <div class="achv-desc"></div>
+        ${isUnlocked ? `<div class="achv-date"></div>` : ""}
+      `;
+      card.querySelector(".achv-title").textContent = a.title;
+      card.querySelector(".achv-desc").textContent = a.desc;
+      if (isUnlocked) card.querySelector(".achv-date").textContent = dateStr;
+      grid.appendChild(card);
+    });
+  }
+
   // ---------- Boot ----------
-  fetch("dictionary.json")
+  // Cache-bust the dictionary so schema changes always reach the browser
+  const DICT_URL = "dictionary.json?v=" + Date.now();
+  fetch(DICT_URL, { cache: "no-store" })
     .then((r) => {
       if (!r.ok) throw new Error("HTTP " + r.status);
       return r.json();
@@ -684,7 +938,9 @@
     .then((data) => {
       words = Array.isArray(data) ? data : [];
       counterTotal.textContent = String(words.length);
-      populateDeckSelect();
+      populateDeckChips();
+      // Silent retroactive check (e.g. for users who already had progress)
+      checkAchievements({ silent: true });
       renderHome();
     })
     .catch((err) => {

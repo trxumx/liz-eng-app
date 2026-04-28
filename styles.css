@@ -94,11 +94,13 @@ html, body {
 
 /* ---------- Deck picker (welcome) ---------- */
 .deck-picker {
+  width: 100%;
+  max-width: 520px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 14px;
+  margin: 8px 0 4px;
 }
 
 .deck-picker-label {
@@ -109,48 +111,230 @@ html, body {
   font-weight: 600;
 }
 
-.deck-select-wrap {
-  position: relative;
-  width: 280px;
-  max-width: 100%;
-}
-.deck-select-wrap::after {
-  content: "▾";
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: var(--ink-faint);
-  font-size: 12px;
+.deck-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
 }
 
-.deck-select {
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  padding: 12px 36px 12px 18px;
-  font-size: 15px;
+.deck-chip {
+  padding: 8px 14px;
+  font-size: 14px;
   font-weight: 500;
   border-radius: 999px;
-  border: 1px solid var(--line);
   background: var(--surface);
   color: var(--ink);
-  font-family: inherit;
+  border: 1px solid var(--line);
   cursor: pointer;
-  transition: border-color 120ms ease, box-shadow 120ms ease;
+  font-family: inherit;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+  white-space: nowrap;
 }
-.deck-select:hover { border-color: #d8d2c4; }
-.deck-select:focus {
-  outline: none;
+.deck-chip:hover { background: var(--surface-2); border-color: #d8d2c4; }
+.deck-chip[aria-pressed="true"] {
+  background: var(--ink);
+  color: #fff;
   border-color: var(--ink);
-  box-shadow: 0 0 0 3px rgba(26,26,26,0.08);
 }
+.deck-chip .chip-count {
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+.deck-chip[aria-pressed="true"] .chip-count { opacity: 0.85; }
 
 .deck-picker-meta {
   font-size: 13px;
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Status strip (home) ---------- */
+.status-strip {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: #fff;
+  border-radius: 14px;
+  margin-bottom: 12px;
+}
+
+.status-cell { min-width: 0; }
+.status-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.55);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.status-value {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.status-xp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.status-xp-text {
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  font-variant-numeric: tabular-nums;
+}
+.status-bar {
+  height: 8px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.status-bar-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #ffd166 0%, #ffba49 100%);
+  border-radius: 999px;
+  transition: width 600ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+/* Menu badge */
+.menu-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 999px;
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Achievements ---------- */
+.achv-summary {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.achv-summary strong { color: var(--ink); font-weight: 700; }
+
+.achv-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+@media (min-width: 540px) {
+  .achv-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.achv-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  position: relative;
+  transition: transform 120ms ease;
+}
+.achv-card.unlocked {
+  background: linear-gradient(180deg, #fffdf6 0%, #fff8e6 100%);
+  border-color: #f0c98a;
+}
+.achv-card.locked { opacity: 0.55; filter: grayscale(0.6); }
+
+.achv-emoji {
+  font-size: 36px;
+  line-height: 1;
+}
+.achv-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.achv-desc {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.35;
+}
+.achv-date {
+  font-size: 10px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
+/* ---------- Toasts ---------- */
+.toast-layer {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  min-width: 220px;
+  max-width: 320px;
+  padding: 12px 14px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: toast-in 220ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.toast.exiting { animation: toast-out 200ms ease forwards; }
+.toast-emoji { font-size: 22px; line-height: 1; }
+.toast-body { flex: 1; line-height: 1.35; }
+.toast-title { font-weight: 700; font-size: 14px; }
+.toast-sub { font-size: 12px; opacity: 0.8; }
+
+.toast.toast-xp { background: linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%); }
+.toast.toast-level {
+  background: linear-gradient(135deg, #b07a00 0%, #ffba49 100%);
+  color: #1a1a1a;
+}
+.toast.toast-level .toast-sub { opacity: 0.85; }
+.toast.toast-achv {
+  background: linear-gradient(135deg, #2f7a3d 0%, #4ea86a 100%);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toast-out {
+  to { opacity: 0; transform: translateY(-8px) scale(0.96); }
+}
+
+@media (max-width: 480px) {
+  .toast-layer { top: 8px; right: 8px; left: 8px; }
+  .toast { max-width: none; }
 }
 
 /* ---------- Deck banner (home) ---------- */
