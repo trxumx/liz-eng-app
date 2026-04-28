@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lizzy's English Vocab</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main id="app">
+      <!-- 1. Welcome -->
+      <section data-view="welcome" class="screen">
+        <div class="welcome-inner">
+          <h1 class="title">English Vocabulary</h1>
+          <p class="subtitle">A little study deck.</p>
+          <button id="start-btn" class="start-btn" data-default="Start studying" data-hover="hi lizzy &lt;3">
+            <span class="start-btn-label">Start studying</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 2. Home menu -->
+      <section data-view="home" class="screen hidden">
+        <header class="page-header">
+          <div class="brand">Vocab</div>
+          <div id="home-progress" class="page-sub"></div>
+        </header>
+        <div class="menu">
+          <button class="menu-card" data-go="study">
+            <div class="menu-title">Study cards</div>
+            <div class="menu-desc">Flip through the deck. Mark what you know.</div>
+          </button>
+          <button class="menu-card" data-go="quiz-setup">
+            <div class="menu-title">Take a quiz</div>
+            <div class="menu-desc">Multiple choice. EN→RU or RU→EN.</div>
+          </button>
+          <button class="menu-card" data-go="stats">
+            <div class="menu-title">Statistics</div>
+            <div class="menu-desc">See progress and weakest words.</div>
+          </button>
+          <button class="menu-card menu-card--ghost" id="reset-btn">
+            <div class="menu-title">Reset progress</div>
+            <div class="menu-desc">Clear all stats and start fresh.</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- 3. Study -->
+      <section data-view="study" class="screen hidden">
+        <header class="page-header">
+          <button class="ghost-btn" data-go="home">&larr; Home</button>
+          <div class="counter"><span id="counter-current">1</span> / <span id="counter-total">0</span></div>
+          <button id="known-btn" class="known-btn" aria-pressed="false">Mark known</button>
+        </header>
+
+        <div class="card-stage">
+          <div id="flashcard" class="flashcard" tabindex="0" role="button" aria-label="Flip card">
+            <div class="flashcard-inner">
+              <div class="flashcard-face flashcard-front">
+                <div class="word" id="card-word"></div>
+                <div class="transcription" id="card-transcription"></div>
+                <div class="hint">click to flip · ← → to navigate</div>
+              </div>
+              <div class="flashcard-face flashcard-back">
+                <div class="back-row">
+                  <span id="card-sentiment" class="sentiment-pill"></span>
+                  <span id="card-meanings" class="meanings-count"></span>
+                </div>
+                <div class="back-section">
+                  <div class="back-label">Translations</div>
+                  <div id="card-translations" class="back-content"></div>
+                </div>
+                <div class="back-section">
+                  <div class="back-label">Synonyms</div>
+                  <div id="card-synonyms" class="back-content"></div>
+                </div>
+                <div class="back-section">
+                  <div class="back-label">Example</div>
+                  <div id="card-example" class="back-content example"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button id="prev-btn" class="nav-btn">&larr; Previous</button>
+          <button id="next-btn" class="nav-btn">Next &rarr;</button>
+        </nav>
+      </section>
+
+      <!-- 4. Quiz setup -->
+      <section data-view="quiz-setup" class="screen hidden">
+        <header class="page-header">
+          <button class="ghost-btn" data-go="home">&larr; Home</button>
+          <div class="page-title-inline">Quiz</div>
+          <div class="header-spacer"></div>
+        </header>
+
+        <div class="form">
+          <div class="form-group">
+            <div class="form-label">Direction</div>
+            <div class="radio-row" role="radiogroup">
+              <label class="radio">
+                <input type="radio" name="quiz-mode" value="en-ru" checked />
+                <span>English → Russian</span>
+              </label>
+              <label class="radio">
+                <input type="radio" name="quiz-mode" value="ru-en" />
+                <span>Russian → English</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Length</div>
+            <div class="radio-row" role="radiogroup">
+              <label class="radio">
+                <input type="radio" name="quiz-len" value="10" checked />
+                <span>10</span>
+              </label>
+              <label class="radio">
+                <input type="radio" name="quiz-len" value="20" />
+                <span>20</span>
+              </label>
+              <label class="radio">
+                <input type="radio" name="quiz-len" value="all" />
+                <span>All</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Pool</div>
+            <div class="radio-row" role="radiogroup">
+              <label class="radio">
+                <input type="radio" name="quiz-pool" value="all" checked />
+                <span>All words</span>
+              </label>
+              <label class="radio">
+                <input type="radio" name="quiz-pool" value="weak" />
+                <span>Weakest first</span>
+              </label>
+            </div>
+          </div>
+
+          <button id="quiz-start-btn" class="primary-btn">Start quiz</button>
+        </div>
+      </section>
+
+      <!-- 5. Quiz active -->
+      <section data-view="quiz" class="screen hidden">
+        <header class="page-header">
+          <button class="ghost-btn" data-go="home">&larr; Quit</button>
+          <div class="counter">
+            <span id="quiz-current">1</span> / <span id="quiz-total">10</span>
+            · <span id="quiz-score">0✓</span>
+          </div>
+          <div class="header-spacer"></div>
+        </header>
+
+        <div class="quiz-stage">
+          <div class="quiz-prompt-label" id="quiz-prompt-label">Translate to Russian</div>
+          <div class="quiz-prompt" id="quiz-prompt"></div>
+          <div class="quiz-options" id="quiz-options"></div>
+          <div class="quiz-feedback" id="quiz-feedback"></div>
+          <button id="quiz-next-btn" class="primary-btn quiz-next hidden">Next →</button>
+        </div>
+      </section>
+
+      <!-- 6. Quiz result -->
+      <section data-view="quiz-result" class="screen hidden">
+        <header class="page-header">
+          <button class="ghost-btn" data-go="home">&larr; Home</button>
+          <div class="page-title-inline">Result</div>
+          <div class="header-spacer"></div>
+        </header>
+
+        <div class="result">
+          <div class="result-score" id="result-score">0 / 0</div>
+          <div class="result-pct" id="result-pct">0%</div>
+          <div id="result-message" class="result-msg"></div>
+          <div class="result-actions">
+            <button class="primary-btn" data-go="quiz-setup">New quiz</button>
+            <button class="secondary-btn" data-go="home">Home</button>
+          </div>
+
+          <div class="back-section result-review">
+            <div class="back-label">Review</div>
+            <ul id="result-list" class="review-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Stats -->
+      <section data-view="stats" class="screen hidden">
+        <header class="page-header">
+          <button class="ghost-btn" data-go="home">&larr; Home</button>
+          <div class="page-title-inline">Statistics</div>
+          <div class="header-spacer"></div>
+        </header>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Viewed</div>
+            <div class="stat-value" id="stat-viewed">0 / 0</div>
+            <div class="bar"><div class="bar-fill" id="bar-viewed"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Marked known</div>
+            <div class="stat-value" id="stat-known">0 / 0</div>
+            <div class="bar"><div class="bar-fill bar-fill-positive" id="bar-known"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Quiz accuracy</div>
+            <div class="stat-value" id="stat-accuracy">—</div>
+            <div class="stat-sub" id="stat-attempts"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Quizzes taken</div>
+            <div class="stat-value" id="stat-quizzes">0</div>
+            <div class="stat-sub" id="stat-best"></div>
+          </div>
+        </div>
+
+        <div class="back-section">
+          <div class="back-label">Words to review</div>
+          <ul id="weak-list" class="weak-list"></ul>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
