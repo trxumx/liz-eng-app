@@ -82,11 +82,23 @@
   let store = loadStorage();
   let view = "welcome";
 
+  // deck selection
+  let selectedTheme = "all"; // "all" or a theme string
+
   // study
   let studyIndex = 0;
 
   // quiz
   let quizState = null;
+
+  function activeWords() {
+    if (selectedTheme === "all") return words;
+    return words.filter((w) => w.theme === selectedTheme);
+  }
+
+  function deckLabel() {
+    return selectedTheme === "all" ? "All Words" : selectedTheme;
+  }
 
   // ---------- Routing ----------
   const screens = document.querySelectorAll("[data-view]");
@@ -128,6 +140,47 @@
   });
   startBtn.addEventListener("click", () => show("home"));
 
+  // ---------- Deck picker ----------
+  const deckSelect = document.getElementById("deck-select");
+  const deckMeta = document.getElementById("deck-meta");
+  const homeDeckName = document.getElementById("home-deck-name");
+  const homeDeckCount = document.getElementById("home-deck-count");
+
+  function populateDeckSelect() {
+    const themes = Array.from(new Set(words.map((w) => w.theme).filter(Boolean))).sort();
+    // remove existing options except "all"
+    deckSelect.innerHTML = "";
+    const allOpt = document.createElement("option");
+    allOpt.value = "all";
+    allOpt.textContent = `All Words (${words.length})`;
+    deckSelect.appendChild(allOpt);
+    themes.forEach((t) => {
+      const count = words.filter((w) => w.theme === t).length;
+      const opt = document.createElement("option");
+      opt.value = t;
+      opt.textContent = `${t} (${count})`;
+      deckSelect.appendChild(opt);
+    });
+    deckSelect.value = selectedTheme;
+    updateDeckMeta();
+  }
+
+  function updateDeckMeta() {
+    const n = activeWords().length;
+    deckMeta.textContent = `${n} word${n === 1 ? "" : "s"}`;
+  }
+
+  function setSelectedTheme(theme) {
+    selectedTheme = theme;
+    studyIndex = 0;
+    flashcard && flashcard.classList.remove("flipped");
+    deckSelect.value = theme;
+    updateDeckMeta();
+    if (view === "home") renderHome();
+  }
+
+  deckSelect.addEventListener("change", (e) => setSelectedTheme(e.target.value));
+
   // ---------- Home ----------
   function renderHome() {
     const total = words.length;
@@ -135,6 +188,11 @@
     const knownCount = words.filter((w) => statsFor(w.word).known).length;
     const el = document.getElementById("home-progress");
     el.textContent = `${viewedCount}/${total} viewed · ${knownCount} known`;
+
+    // Deck banner
+    const active = activeWords();
+    homeDeckName.textContent = deckLabel();
+    homeDeckCount.textContent = `· ${active.length} word${active.length === 1 ? "" : "s"}`;
   }
 
   document.getElementById("reset-btn").addEventListener("click", () => {
@@ -153,6 +211,8 @@
   const cardTranslations = document.getElementById("card-translations");
   const cardSynonyms = document.getElementById("card-synonyms");
   const cardExample = document.getElementById("card-example");
+  const cardMistakeSection = document.getElementById("card-mistake-section");
+  const cardMistake = document.getElementById("card-mistake");
   const counterCurrent = document.getElementById("counter-current");
   const counterTotal = document.getElementById("counter-total");
   const knownBtn = document.getElementById("known-btn");
@@ -165,8 +225,16 @@
   }
 
   function renderStudy() {
-    if (!words.length) return;
-    const w = words[studyIndex];
+    const deck = activeWords();
+    if (!deck.length) {
+      cardWord.textContent = "Empty deck";
+      cardTranscription.textContent = "";
+      counterCurrent.textContent = "0";
+      counterTotal.textContent = "0";
+      return;
+    }
+    if (studyIndex >= deck.length) studyIndex = 0;
+    const w = deck[studyIndex];
     cardWord.textContent = w.word;
     cardTranscription.textContent = w.transcription || "";
     cardSentiment.textContent = w.sentiment;
@@ -176,8 +244,18 @@
     cardTranslations.textContent = (w.translations || []).join(", ");
     cardSynonyms.textContent = (w.synonyms || []).join(", ");
     cardExample.innerHTML = w.example || "";
+
+    // Common mistake block
+    if (w.common_mistake && w.common_mistake.trim().length > 0) {
+      cardMistake.textContent = w.common_mistake;
+      cardMistakeSection.classList.remove("hidden");
+    } else {
+      cardMistake.textContent = "";
+      cardMistakeSection.classList.add("hidden");
+    }
+
     counterCurrent.textContent = String(studyIndex + 1);
-    counterTotal.textContent = String(words.length);
+    counterTotal.textContent = String(deck.length);
 
     const s = statsFor(w.word);
     knownBtn.setAttribute("aria-pressed", s.known ? "true" : "false");
@@ -195,8 +273,9 @@
   });
 
   function studyGo(delta) {
-    if (!words.length) return;
-    studyIndex = (studyIndex + delta + words.length) % words.length;
+    const n = activeWords().length;
+    if (!n) return;
+    studyIndex = (studyIndex + delta + n) % n;
     flashcard.classList.remove("flipped");
     renderStudy();
   }
@@ -205,7 +284,9 @@
 
   knownBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    const w = words[studyIndex];
+    const deck = activeWords();
+    if (!deck.length) return;
+    const w = deck[studyIndex];
     const s = statsFor(w.word);
     setKnown(w.word, !s.known);
     knownBtn.setAttribute("aria-pressed", s.known ? "true" : "false");
@@ -283,7 +364,7 @@
   }
 
   function buildQuestions(mode, len, pool) {
-    let candidates = words.slice();
+    let candidates = activeWords().slice();
     if (pool === "weak") {
       candidates.sort((a, b) => {
         const sa = statsFor(a.word);
@@ -309,8 +390,12 @@
 
       let options = null;
       if (mode !== "type") {
-        const distractorPool = words.filter((x) => x.word !== w.word);
-        const distractors = shuffle(distractorPool).slice(0, 8).map((x) => {
+        // Prefer distractors from the same deck for thematic coherence;
+        // fall back to the full dictionary if the deck is too small.
+        const inDeck = activeWords().filter((x) => x.word !== w.word);
+        const outOfDeck = words.filter((x) => x.word !== w.word && !inDeck.includes(x));
+        const pool = shuffle(inDeck).concat(shuffle(outOfDeck));
+        const distractors = pool.slice(0, 12).map((x) => {
           return isEnRu ? (x.translations[0] || x.word) : x.word;
         });
         const seen = new Set([answerText]);
@@ -599,6 +684,7 @@
     .then((data) => {
       words = Array.isArray(data) ? data : [];
       counterTotal.textContent = String(words.length);
+      populateDeckSelect();
       renderHome();
     })
     .catch((err) => {

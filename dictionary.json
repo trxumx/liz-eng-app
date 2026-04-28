@@ -4,854 +4,1698 @@
     "transcription": "/tjuːˈmʌltʃuəs/",
     "sentiment": "Negative",
     "meanings_count": 2,
-    "translations": ["бурный", "шумный"],
-    "synonyms": ["turbulent", "stormy", "chaotic"],
-    "example": "Their relationship was as <mark>tumultuous</mark> as a winter sea."
+    "translations": [
+      "бурный",
+      "шумный"
+    ],
+    "synonyms": [
+      "turbulent",
+      "stormy",
+      "chaotic"
+    ],
+    "example": "Their relationship was as <mark>tumultuous</mark> as a winter sea.",
+    "theme": "Emotions",
+    "common_mistake": ""
   },
   {
     "word": "whirlwind",
     "transcription": "/ˈwɜːlwɪnd/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["вихрь", "стремительный (о романе, поездке)"],
-    "synonyms": ["tornado", "frenzy", "rapid"],
-    "example": "They had a <mark>whirlwind</mark> romance and married within a month."
+    "translations": [
+      "вихрь",
+      "стремительный (о романе, поездке)"
+    ],
+    "synonyms": [
+      "tornado",
+      "frenzy",
+      "rapid"
+    ],
+    "example": "They had a <mark>whirlwind</mark> romance and married within a month.",
+    "theme": "Relationships",
+    "common_mistake": ""
   },
   {
     "word": "abnormally",
     "transcription": "/æbˈnɔːməli/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["ненормально", "аномально"],
-    "synonyms": ["unusually", "atypically", "strangely"],
-    "example": "The patient's heart rate was <mark>abnormally</mark> high."
+    "translations": [
+      "ненормально",
+      "аномально"
+    ],
+    "synonyms": [
+      "unusually",
+      "atypically",
+      "strangely"
+    ],
+    "example": "The patient's heart rate was <mark>abnormally</mark> high.",
+    "theme": "Personality",
+    "common_mistake": ""
   },
   {
     "word": "the show aired",
     "transcription": "/ðə ʃəʊ eəd/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["шоу вышло в эфир"],
-    "synonyms": ["broadcast", "premiered", "ran"],
-    "example": "<mark>The show aired</mark> for the first time on a Friday night."
+    "translations": [
+      "шоу вышло в эфир"
+    ],
+    "synonyms": [
+      "broadcast",
+      "premiered",
+      "ran"
+    ],
+    "example": "<mark>The show aired</mark> for the first time on a Friday night.",
+    "theme": "Media & Business",
+    "common_mistake": "Use 'aired' (past tense) — same form as the present."
   },
   {
     "word": "call out",
     "transcription": "/kɔːl aʊt/",
     "sentiment": "Negative",
     "meanings_count": 2,
-    "translations": ["разоблачить", "публично указать на (ошибку)"],
-    "synonyms": ["criticize", "denounce", "expose"],
-    "example": "She wasn't afraid to <mark>call out</mark> her boss for the mistake."
+    "translations": [
+      "разоблачить",
+      "публично указать на (ошибку)"
+    ],
+    "synonyms": [
+      "criticize",
+      "denounce",
+      "expose"
+    ],
+    "example": "She wasn't afraid to <mark>call out</mark> her boss for the mistake.",
+    "theme": "Society",
+    "common_mistake": "'Call out' (verb, two words) ≠ 'callout' (noun, an alert)."
   },
   {
     "word": "mass appeal",
     "transcription": "/mæs əˈpiːl/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["массовая привлекательность"],
-    "synonyms": ["broad appeal", "popularity", "wide attraction"],
-    "example": "The film's simple plot gave it <mark>mass appeal</mark>."
+    "translations": [
+      "массовая привлекательность"
+    ],
+    "synonyms": [
+      "broad appeal",
+      "popularity",
+      "wide attraction"
+    ],
+    "example": "The film's simple plot gave it <mark>mass appeal</mark>.",
+    "theme": "Media & Business",
+    "common_mistake": ""
   },
   {
     "word": "grip",
     "transcription": "/ɡrɪp/",
     "sentiment": "Neutral",
     "meanings_count": 3,
-    "translations": ["хватка", "власть", "схватить"],
-    "synonyms": ["hold", "grasp", "clutch"],
-    "example": "The story had a powerful <mark>grip</mark> on the audience."
+    "translations": [
+      "хватка",
+      "власть",
+      "схватить"
+    ],
+    "synonyms": [
+      "hold",
+      "grasp",
+      "clutch"
+    ],
+    "example": "The story had a powerful <mark>grip</mark> on the audience.",
+    "theme": "Abstract",
+    "common_mistake": "'Grip' (firm hold) ≠ 'gripe' (a complaint)."
   },
   {
     "word": "ash",
     "transcription": "/æʃ/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["пепел", "пепельный (о цвете волос)"],
-    "synonyms": ["cinders", "soot", "ashen"],
-    "example": "She dyed her hair a cool <mark>ash</mark> blonde."
+    "translations": [
+      "пепел",
+      "пепельный (о цвете волос)"
+    ],
+    "synonyms": [
+      "cinders",
+      "soot",
+      "ashen"
+    ],
+    "example": "She dyed her hair a cool <mark>ash</mark> blonde.",
+    "theme": "Beauty",
+    "common_mistake": "Hair-color sense — not the same as 'ashy' (describing dry skin)."
   },
   {
     "word": "inflated",
     "transcription": "/ɪnˈfleɪtɪd/",
     "sentiment": "Negative",
     "meanings_count": 2,
-    "translations": ["раздутый", "завышенный"],
-    "synonyms": ["exaggerated", "overblown", "swollen"],
-    "example": "He has an <mark>inflated</mark> sense of his own importance."
+    "translations": [
+      "раздутый",
+      "завышенный"
+    ],
+    "synonyms": [
+      "exaggerated",
+      "overblown",
+      "swollen"
+    ],
+    "example": "He has an <mark>inflated</mark> sense of his own importance.",
+    "theme": "Personality",
+    "common_mistake": "'Inflated' (exaggerated) ≠ 'inflamed' (red and swollen)."
   },
   {
     "word": "spouse",
     "transcription": "/spaʊs/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["супруг", "супруга"],
-    "synonyms": ["partner", "husband", "wife"],
-    "example": "You can bring your <mark>spouse</mark> to the company dinner."
+    "translations": [
+      "супруг",
+      "супруга"
+    ],
+    "synonyms": [
+      "partner",
+      "husband",
+      "wife"
+    ],
+    "example": "You can bring your <mark>spouse</mark> to the company dinner.",
+    "theme": "Relationships",
+    "common_mistake": "Pronounced /spaʊs/ — like 'house', not 'spowze'."
   },
   {
     "word": "superiority",
     "transcription": "/suːˌpɪəriˈɒrəti/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["превосходство", "высокомерие"],
-    "synonyms": ["dominance", "supremacy", "preeminence"],
-    "example": "He spoke with an air of <mark>superiority</mark>."
+    "translations": [
+      "превосходство",
+      "высокомерие"
+    ],
+    "synonyms": [
+      "dominance",
+      "supremacy",
+      "preeminence"
+    ],
+    "example": "He spoke with an air of <mark>superiority</mark>.",
+    "theme": "Personality",
+    "common_mistake": ""
   },
   {
     "word": "feels off-putting",
     "transcription": "/fiːlz ˈɒfˌpʊtɪŋ/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["вызывает отторжение", "кажется отталкивающим"],
-    "synonyms": ["seems repellent", "feels unappealing", "comes across as unpleasant"],
-    "example": "His overly polished smile <mark>feels off-putting</mark>."
+    "translations": [
+      "вызывает отторжение",
+      "кажется отталкивающим"
+    ],
+    "synonyms": [
+      "seems repellent",
+      "feels unappealing",
+      "comes across as unpleasant"
+    ],
+    "example": "His overly polished smile <mark>feels off-putting</mark>.",
+    "theme": "Emotions",
+    "common_mistake": "Hyphenated: 'off-putting', not 'offputting' or 'off putting'."
   },
   {
     "word": "the outlet",
     "transcription": "/ði ˈaʊtlet/",
     "sentiment": "Neutral",
     "meanings_count": 3,
-    "translations": ["издание (СМИ)", "розетка", "выход"],
-    "synonyms": ["publication", "media source", "channel"],
-    "example": "<mark>The outlet</mark> published the story without fact-checking it."
+    "translations": [
+      "издание (СМИ)",
+      "розетка",
+      "выход"
+    ],
+    "synonyms": [
+      "publication",
+      "media source",
+      "channel"
+    ],
+    "example": "<mark>The outlet</mark> published the story without fact-checking it.",
+    "theme": "Media & Business",
+    "common_mistake": "Here = a media publication, NOT an electrical socket."
   },
   {
     "word": "pitched as",
     "transcription": "/pɪtʃt æz/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["преподноситься как", "позиционироваться как"],
-    "synonyms": ["presented as", "marketed as", "framed as"],
-    "example": "The brunette is often <mark>pitched as</mark> the smart one in the show."
+    "translations": [
+      "преподноситься как",
+      "позиционироваться как"
+    ],
+    "synonyms": [
+      "presented as",
+      "marketed as",
+      "framed as"
+    ],
+    "example": "The brunette is often <mark>pitched as</mark> the smart one in the show.",
+    "theme": "Media & Business",
+    "common_mistake": ""
   },
   {
     "word": "ditzy",
     "transcription": "/ˈdɪtsi/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["глуповатая", "взбалмошная"],
-    "synonyms": ["scatterbrained", "airheaded", "silly"],
-    "example": "She plays a <mark>ditzy</mark> blonde in the sitcom."
+    "translations": [
+      "глуповатая",
+      "взбалмошная"
+    ],
+    "synonyms": [
+      "scatterbrained",
+      "airheaded",
+      "silly"
+    ],
+    "example": "She plays a <mark>ditzy</mark> blonde in the sitcom.",
+    "theme": "Personality",
+    "common_mistake": "Sometimes spelled 'ditsy' — both accepted."
   },
   {
     "word": "bleaching",
     "transcription": "/ˈbliːtʃɪŋ/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["обесцвечивание (волос)", "отбеливание"],
-    "synonyms": ["lightening", "whitening", "decolorizing"],
-    "example": "<mark>Bleaching</mark> her hair damaged the ends."
+    "translations": [
+      "обесцвечивание (волос)",
+      "отбеливание"
+    ],
+    "synonyms": [
+      "lightening",
+      "whitening",
+      "decolorizing"
+    ],
+    "example": "<mark>Bleaching</mark> her hair damaged the ends.",
+    "theme": "Beauty",
+    "common_mistake": ""
   },
   {
     "word": "highlighting",
     "transcription": "/ˈhaɪlaɪtɪŋ/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["мелирование", "выделение"],
-    "synonyms": ["streaking", "accentuating", "emphasizing"],
-    "example": "She booked an appointment for <mark>highlighting</mark> her hair."
+    "translations": [
+      "мелирование",
+      "выделение"
+    ],
+    "synonyms": [
+      "streaking",
+      "accentuating",
+      "emphasizing"
+    ],
+    "example": "She booked an appointment for <mark>highlighting</mark> her hair.",
+    "theme": "Beauty",
+    "common_mistake": "In hair: streaks of lighter color — not just 'emphasizing'."
   },
   {
     "word": "psyop",
     "transcription": "/ˈsaɪɒp/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["психологическая операция", "манипуляция сознанием"],
-    "synonyms": ["mind game", "propaganda", "manipulation"],
-    "example": "Some people half-jokingly call thin culture a <mark>psyop</mark>."
+    "translations": [
+      "психологическая операция",
+      "манипуляция сознанием"
+    ],
+    "synonyms": [
+      "mind game",
+      "propaganda",
+      "manipulation"
+    ],
+    "example": "Some people half-jokingly call thin culture a <mark>psyop</mark>.",
+    "theme": "Society",
+    "common_mistake": "Short for 'psychological operation'. Pronounced /ˈsaɪɒp/."
   },
   {
     "word": "connotation",
     "transcription": "/ˌkɒnəˈteɪʃən/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["коннотация", "подтекст"],
-    "synonyms": ["implication", "undertone", "nuance"],
-    "example": "The word 'cheap' has a negative <mark>connotation</mark>."
+    "translations": [
+      "коннотация",
+      "подтекст"
+    ],
+    "synonyms": [
+      "implication",
+      "undertone",
+      "nuance"
+    ],
+    "example": "The word 'cheap' has a negative <mark>connotation</mark>.",
+    "theme": "Ideas & Science",
+    "common_mistake": "'Connotation' (implied meaning) ≠ 'denotation' (literal meaning)."
   },
   {
     "word": "youthfulness",
     "transcription": "/ˈjuːθfʊlnəs/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["молодость", "юность"],
-    "synonyms": ["youth", "freshness", "vitality"],
-    "example": "Her skincare routine preserves her <mark>youthfulness</mark>."
+    "translations": [
+      "молодость",
+      "юность"
+    ],
+    "synonyms": [
+      "youth",
+      "freshness",
+      "vitality"
+    ],
+    "example": "Her skincare routine preserves her <mark>youthfulness</mark>.",
+    "theme": "Beauty",
+    "common_mistake": ""
   },
   {
     "word": "cite",
     "transcription": "/saɪt/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["ссылаться на", "приводить в качестве примера"],
-    "synonyms": ["mention", "reference", "quote"],
-    "example": "Many women <mark>cite</mark> youthfulness as a reason to dye their hair."
+    "translations": [
+      "ссылаться на",
+      "приводить в качестве примера"
+    ],
+    "synonyms": [
+      "mention",
+      "reference",
+      "quote"
+    ],
+    "example": "Many women <mark>cite</mark> youthfulness as a reason to dye their hair.",
+    "theme": "Ideas & Science",
+    "common_mistake": "'Cite' ≠ 'site' (place) ≠ 'sight' (vision). All sound the same."
   },
   {
     "word": "bleaches",
     "transcription": "/ˈbliːtʃɪz/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["обесцвечивает", "осветляет"],
-    "synonyms": ["lightens", "whitens", "decolorizes"],
-    "example": "She <mark>bleaches</mark> her hair every six weeks."
+    "translations": [
+      "обесцвечивает",
+      "осветляет"
+    ],
+    "synonyms": [
+      "lightens",
+      "whitens",
+      "decolorizes"
+    ],
+    "example": "She <mark>bleaches</mark> her hair every six weeks.",
+    "theme": "Beauty",
+    "common_mistake": ""
   },
   {
     "word": "cherished",
     "transcription": "/ˈtʃerɪʃt/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["лелеемый", "дорогой сердцу"],
-    "synonyms": ["treasured", "beloved", "valued"],
-    "example": "Blonde hair is <mark>cherished</mark> as a symbol of beauty."
+    "translations": [
+      "лелеемый",
+      "дорогой сердцу"
+    ],
+    "synonyms": [
+      "treasured",
+      "beloved",
+      "valued"
+    ],
+    "example": "Blonde hair is <mark>cherished</mark> as a symbol of beauty.",
+    "theme": "Emotions",
+    "common_mistake": ""
   },
   {
     "word": "ends of the spectrum",
     "transcription": "/endz əv ðə ˈspektrəm/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["крайние точки спектра", "противоположные стороны"],
-    "synonyms": ["extremes", "opposite poles", "both extremes"],
-    "example": "On all <mark>ends of the spectrum</mark>, women have opinions on this."
+    "translations": [
+      "крайние точки спектра",
+      "противоположные стороны"
+    ],
+    "synonyms": [
+      "extremes",
+      "opposite poles",
+      "both extremes"
+    ],
+    "example": "On all <mark>ends of the spectrum</mark>, women have opinions on this.",
+    "theme": "Ideas & Science",
+    "common_mistake": ""
   },
   {
     "word": "morally loaded",
     "transcription": "/ˈmɒrəli ˈləʊdɪd/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["морально нагруженный", "с моральным подтекстом"],
-    "synonyms": ["ethically charged", "value-laden", "moralistic"],
-    "example": "The choice to dye one's hair has become <mark>morally loaded</mark>."
+    "translations": [
+      "морально нагруженный",
+      "с моральным подтекстом"
+    ],
+    "synonyms": [
+      "ethically charged",
+      "value-laden",
+      "moralistic"
+    ],
+    "example": "The choice to dye one's hair has become <mark>morally loaded</mark>.",
+    "theme": "Society",
+    "common_mistake": ""
   },
   {
     "word": "paragon",
     "transcription": "/ˈpærəɡən/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["образец", "эталон"],
-    "synonyms": ["epitome", "exemplar", "ideal"],
-    "example": "She was held up as the <mark>paragon</mark> of female beauty."
+    "translations": [
+      "образец",
+      "эталон"
+    ],
+    "synonyms": [
+      "epitome",
+      "exemplar",
+      "ideal"
+    ],
+    "example": "She was held up as the <mark>paragon</mark> of female beauty.",
+    "theme": "Personality",
+    "common_mistake": ""
   },
   {
     "word": "endured",
     "transcription": "/ɪnˈdjʊəd/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["сохранилось", "выдержало"],
-    "synonyms": ["lasted", "persisted", "survived"],
-    "example": "The trend has <mark>endured</mark> for over a century."
+    "translations": [
+      "сохранилось",
+      "выдержало"
+    ],
+    "synonyms": [
+      "lasted",
+      "persisted",
+      "survived"
+    ],
+    "example": "The trend has <mark>endured</mark> for over a century.",
+    "theme": "Abstract",
+    "common_mistake": "'Endured' (lasted) ≠ 'ensured' (made certain)."
   },
   {
     "word": "emblem",
     "transcription": "/ˈembləm/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["эмблема", "символ"],
-    "synonyms": ["symbol", "badge", "icon"],
-    "example": "Blondness became an <mark>emblem</mark> of modern chicness."
+    "translations": [
+      "эмблема",
+      "символ"
+    ],
+    "synonyms": [
+      "symbol",
+      "badge",
+      "icon"
+    ],
+    "example": "Blondness became an <mark>emblem</mark> of modern chicness.",
+    "theme": "Society",
+    "common_mistake": ""
   },
   {
     "word": "chicness",
     "transcription": "/ˈʃiːknəs/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["шик", "элегантность"],
-    "synonyms": ["elegance", "stylishness", "sophistication"],
-    "example": "Parisian fashion is the standard of <mark>chicness</mark>."
+    "translations": [
+      "шик",
+      "элегантность"
+    ],
+    "synonyms": [
+      "elegance",
+      "stylishness",
+      "sophistication"
+    ],
+    "example": "Parisian fashion is the standard of <mark>chicness</mark>.",
+    "theme": "Fashion",
+    "common_mistake": "Spelled 'chicness'; pronounced /ˈʃiːknəs/."
   },
   {
     "word": "blondness",
     "transcription": "/ˈblɒndnəs/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["белокурость", "светловолосость"],
-    "synonyms": ["fairness", "blondeness", "lightness"],
-    "example": "Why has <mark>blondness</mark> endured as a beauty ideal?"
+    "translations": [
+      "белокурость",
+      "светловолосость"
+    ],
+    "synonyms": [
+      "fairness",
+      "blondeness",
+      "lightness"
+    ],
+    "example": "Why has <mark>blondness</mark> endured as a beauty ideal?",
+    "theme": "Beauty",
+    "common_mistake": "British: 'blonde' (♀), 'blond' (♂). American: 'blond' for both."
   },
   {
     "word": "woven fabrics",
     "transcription": "/ˈwəʊvən ˈfæbrɪks/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["тканые материалы", "плетёные ткани"],
-    "synonyms": ["textiles", "weaves", "cloth"],
-    "example": "The dress was made from luxurious <mark>woven fabrics</mark>."
+    "translations": [
+      "тканые материалы",
+      "плетёные ткани"
+    ],
+    "synonyms": [
+      "textiles",
+      "weaves",
+      "cloth"
+    ],
+    "example": "The dress was made from luxurious <mark>woven fabrics</mark>.",
+    "theme": "Fashion",
+    "common_mistake": ""
   },
   {
     "word": "draped",
     "transcription": "/dreɪpt/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["задрапированный", "ниспадающий"],
-    "synonyms": ["wrapped", "hung", "swathed"],
-    "example": "Silk was <mark>draped</mark> elegantly over her shoulders."
+    "translations": [
+      "задрапированный",
+      "ниспадающий"
+    ],
+    "synonyms": [
+      "wrapped",
+      "hung",
+      "swathed"
+    ],
+    "example": "Silk was <mark>draped</mark> elegantly over her shoulders.",
+    "theme": "Fashion",
+    "common_mistake": ""
   },
   {
     "word": "heralded",
     "transcription": "/ˈherəldɪd/",
     "sentiment": "Positive",
     "meanings_count": 2,
-    "translations": ["провозглашённый", "возвещённый"],
-    "synonyms": ["announced", "proclaimed", "hailed"],
-    "example": "The collection was <mark>heralded</mark> as a turning point in fashion."
+    "translations": [
+      "провозглашённый",
+      "возвещённый"
+    ],
+    "synonyms": [
+      "announced",
+      "proclaimed",
+      "hailed"
+    ],
+    "example": "The collection was <mark>heralded</mark> as a turning point in fashion.",
+    "theme": "Society",
+    "common_mistake": "'Heralded' (announced) ≠ 'herded' (drove animals)."
   },
   {
     "word": "outbreak",
     "transcription": "/ˈaʊtbreɪk/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["вспышка (войны, болезни)"],
-    "synonyms": ["eruption", "onset", "outburst"],
-    "example": "The <mark>outbreak</mark> of war disrupted the fashion industry."
+    "translations": [
+      "вспышка (войны, болезни)"
+    ],
+    "synonyms": [
+      "eruption",
+      "onset",
+      "outburst"
+    ],
+    "example": "The <mark>outbreak</mark> of war disrupted the fashion industry.",
+    "theme": "Conflict & History",
+    "common_mistake": "'Outbreak' (sudden start, e.g. of war) ≠ 'outburst' (sudden show of emotion)."
   },
   {
     "word": "conscription",
     "transcription": "/kənˈskrɪpʃən/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["воинская повинность", "призыв"],
-    "synonyms": ["draft", "enlistment", "compulsory service"],
-    "example": "<mark>Conscription</mark> took most young men away from civilian life."
+    "translations": [
+      "воинская повинность",
+      "призыв"
+    ],
+    "synonyms": [
+      "draft",
+      "enlistment",
+      "compulsory service"
+    ],
+    "example": "<mark>Conscription</mark> took most young men away from civilian life.",
+    "theme": "Conflict & History",
+    "common_mistake": "'Conscription' (military draft) ≠ 'conscientious' (careful, thorough)."
   },
   {
     "word": "retained",
     "transcription": "/rɪˈteɪnd/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["сохранил", "удержал"],
-    "synonyms": ["kept", "preserved", "maintained"],
-    "example": "She <mark>retained</mark> her composure throughout the interview."
+    "translations": [
+      "сохранил",
+      "удержал"
+    ],
+    "synonyms": [
+      "kept",
+      "preserved",
+      "maintained"
+    ],
+    "example": "She <mark>retained</mark> her composure throughout the interview.",
+    "theme": "Abstract",
+    "common_mistake": ""
   },
   {
     "word": "upturned",
     "transcription": "/ˌʌpˈtɜːnd/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["приподнятый", "перевёрнутый"],
-    "synonyms": ["raised", "lifted", "tilted up"],
-    "example": "She had a slightly <mark>upturned</mark> nose."
+    "translations": [
+      "приподнятый",
+      "перевёрнутый"
+    ],
+    "synonyms": [
+      "raised",
+      "lifted",
+      "tilted up"
+    ],
+    "example": "She had a slightly <mark>upturned</mark> nose.",
+    "theme": "Abstract",
+    "common_mistake": ""
   },
   {
     "word": "forbidding",
     "transcription": "/fəˈbɪdɪŋ/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["неприступный", "грозный"],
-    "synonyms": ["intimidating", "stern", "menacing"],
-    "example": "The castle had a <mark>forbidding</mark> appearance."
+    "translations": [
+      "неприступный",
+      "грозный"
+    ],
+    "synonyms": [
+      "intimidating",
+      "stern",
+      "menacing"
+    ],
+    "example": "The castle had a <mark>forbidding</mark> appearance.",
+    "theme": "Personality",
+    "common_mistake": "'Forbidding' (intimidating) ≠ 'foreboding' (sense of coming evil)."
   },
   {
     "word": "dormant",
     "transcription": "/ˈdɔːmənt/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["спящий", "бездействующий"],
-    "synonyms": ["inactive", "latent", "asleep"],
-    "example": "The volcano had been <mark>dormant</mark> for centuries."
+    "translations": [
+      "спящий",
+      "бездействующий"
+    ],
+    "synonyms": [
+      "inactive",
+      "latent",
+      "asleep"
+    ],
+    "example": "The volcano had been <mark>dormant</mark> for centuries.",
+    "theme": "Abstract",
+    "common_mistake": "'Dormant' (inactive but alive) ≠ 'extinct' (gone forever)."
   },
   {
     "word": "marvellous",
     "transcription": "/ˈmɑːvələs/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["изумительный", "чудесный"],
-    "synonyms": ["wonderful", "amazing", "splendid"],
-    "example": "The view from the balcony was absolutely <mark>marvellous</mark>."
+    "translations": [
+      "изумительный",
+      "чудесный"
+    ],
+    "synonyms": [
+      "wonderful",
+      "amazing",
+      "splendid"
+    ],
+    "example": "The view from the balcony was absolutely <mark>marvellous</mark>.",
+    "theme": "Emotions",
+    "common_mistake": "British 'marvellous' = American 'marvelous' (one L)."
   },
   {
     "word": "haute couture",
     "transcription": "/ˌəʊt kuːˈtjʊə/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["высокая мода"],
-    "synonyms": ["high fashion", "designer fashion", "couture"],
-    "example": "She dreams of working in <mark>haute couture</mark> in Paris."
+    "translations": [
+      "высокая мода"
+    ],
+    "synonyms": [
+      "high fashion",
+      "designer fashion",
+      "couture"
+    ],
+    "example": "She dreams of working in <mark>haute couture</mark> in Paris.",
+    "theme": "Fashion",
+    "common_mistake": "Pronounced /ˌəʊt kuːˈtjʊə/ — silent 'h'."
   },
   {
     "word": "defiance",
     "transcription": "/dɪˈfaɪəns/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["неповиновение", "вызов"],
-    "synonyms": ["resistance", "rebellion", "disobedience"],
-    "example": "Her short skirt was an act of <mark>defiance</mark> against tradition."
+    "translations": [
+      "неповиновение",
+      "вызов"
+    ],
+    "synonyms": [
+      "resistance",
+      "rebellion",
+      "disobedience"
+    ],
+    "example": "Her short skirt was an act of <mark>defiance</mark> against tradition.",
+    "theme": "Personality",
+    "common_mistake": "'Defiance' (resistance) ≠ 'deviance' (departure from a norm)."
   },
   {
     "word": "hourglass figure",
     "transcription": "/ˈaʊəɡlɑːs ˈfɪɡə/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["фигура «песочные часы»"],
-    "synonyms": ["curvy figure", "wasp waist", "shapely silhouette"],
-    "example": "The dress was tailored to flatter her <mark>hourglass figure</mark>."
+    "translations": [
+      "фигура «песочные часы»"
+    ],
+    "synonyms": [
+      "curvy figure",
+      "wasp waist",
+      "shapely silhouette"
+    ],
+    "example": "The dress was tailored to flatter her <mark>hourglass figure</mark>.",
+    "theme": "Beauty",
+    "common_mistake": ""
   },
   {
     "word": "revival",
     "transcription": "/rɪˈvaɪvəl/",
     "sentiment": "Positive",
     "meanings_count": 2,
-    "translations": ["возрождение", "восстановление"],
-    "synonyms": ["resurgence", "renewal", "comeback"],
-    "example": "The 1950s saw a <mark>revival</mark> of feminine fashion."
+    "translations": [
+      "возрождение",
+      "восстановление"
+    ],
+    "synonyms": [
+      "resurgence",
+      "renewal",
+      "comeback"
+    ],
+    "example": "The 1950s saw a <mark>revival</mark> of feminine fashion.",
+    "theme": "Society",
+    "common_mistake": ""
   },
   {
     "word": "segued into",
     "transcription": "/ˈseɡweɪd ˈɪntuː/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["плавно перешёл в"],
-    "synonyms": ["transitioned into", "shifted into", "merged into"],
-    "example": "The 1950s style <mark>segued into</mark> the bolder looks of the 1960s."
+    "translations": [
+      "плавно перешёл в"
+    ],
+    "synonyms": [
+      "transitioned into",
+      "shifted into",
+      "merged into"
+    ],
+    "example": "The 1950s style <mark>segued into</mark> the bolder looks of the 1960s.",
+    "theme": "Abstract",
+    "common_mistake": "Pronounced /ˈseɡweɪd/. Often misspelled 'segwayed'."
   },
   {
     "word": "staple",
     "transcription": "/ˈsteɪpəl/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["основной элемент", "продукт первой необходимости"],
-    "synonyms": ["essential", "mainstay", "basic"],
-    "example": "The little black dress is a wardrobe <mark>staple</mark>."
+    "translations": [
+      "основной элемент",
+      "продукт первой необходимости"
+    ],
+    "synonyms": [
+      "essential",
+      "mainstay",
+      "basic"
+    ],
+    "example": "The little black dress is a wardrobe <mark>staple</mark>.",
+    "theme": "Fashion",
+    "common_mistake": "'Staple' (essential item) ≠ 'stapler' (the tool)."
   },
   {
     "word": "bodice",
     "transcription": "/ˈbɒdɪs/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["лиф", "корсаж"],
-    "synonyms": ["corset", "top", "blouse"],
-    "example": "The dress had an embroidered <mark>bodice</mark>."
+    "translations": [
+      "лиф",
+      "корсаж"
+    ],
+    "synonyms": [
+      "corset",
+      "top",
+      "blouse"
+    ],
+    "example": "The dress had an embroidered <mark>bodice</mark>.",
+    "theme": "Fashion",
+    "common_mistake": "'Bodice' (top of a dress) ≠ 'bodies' (plural of body)."
   },
   {
     "word": "contoured",
     "transcription": "/ˈkɒntʊəd/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["облегающий", "повторяющий контуры"],
-    "synonyms": ["shaped", "fitted", "moulded"],
-    "example": "The jacket was <mark>contoured</mark> to her figure."
+    "translations": [
+      "облегающий",
+      "повторяющий контуры"
+    ],
+    "synonyms": [
+      "shaped",
+      "fitted",
+      "moulded"
+    ],
+    "example": "The jacket was <mark>contoured</mark> to her figure.",
+    "theme": "Fashion",
+    "common_mistake": ""
   },
   {
     "word": "tyrannical",
     "transcription": "/tɪˈrænɪkəl/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["тиранический", "деспотичный"],
-    "synonyms": ["oppressive", "despotic", "dictatorial"],
-    "example": "Some called the dress code <mark>tyrannical</mark> in its strictness."
+    "translations": [
+      "тиранический",
+      "деспотичный"
+    ],
+    "synonyms": [
+      "oppressive",
+      "despotic",
+      "dictatorial"
+    ],
+    "example": "Some called the dress code <mark>tyrannical</mark> in its strictness.",
+    "theme": "Personality",
+    "common_mistake": ""
   },
   {
     "word": "chemise dress",
     "transcription": "/ʃəˈmiːz dres/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["платье-рубашка"],
-    "synonyms": ["shift dress", "slip dress", "T-dress"],
-    "example": "She wore a simple white <mark>chemise dress</mark>."
+    "translations": [
+      "платье-рубашка"
+    ],
+    "synonyms": [
+      "shift dress",
+      "slip dress",
+      "T-dress"
+    ],
+    "example": "She wore a simple white <mark>chemise dress</mark>.",
+    "theme": "Fashion",
+    "common_mistake": ""
   },
   {
     "word": "demeanour",
     "transcription": "/dɪˈmiːnə/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["манера поведения", "поведение"],
-    "synonyms": ["manner", "conduct", "bearing"],
-    "example": "Her calm <mark>demeanour</mark> impressed the panel."
+    "translations": [
+      "манера поведения",
+      "поведение"
+    ],
+    "synonyms": [
+      "manner",
+      "conduct",
+      "bearing"
+    ],
+    "example": "Her calm <mark>demeanour</mark> impressed the panel.",
+    "theme": "Personality",
+    "common_mistake": "British 'demeanour' = American 'demeanor'."
   },
   {
     "word": "overturned",
     "transcription": "/ˌəʊvəˈtɜːnd/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["опрокинутый", "отменённый"],
-    "synonyms": ["reversed", "toppled", "upended"],
-    "example": "The new style <mark>overturned</mark> the traditional silhouette."
+    "translations": [
+      "опрокинутый",
+      "отменённый"
+    ],
+    "synonyms": [
+      "reversed",
+      "toppled",
+      "upended"
+    ],
+    "example": "The new style <mark>overturned</mark> the traditional silhouette.",
+    "theme": "Society",
+    "common_mistake": ""
   },
   {
     "word": "advent",
     "transcription": "/ˈædvent/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["появление", "наступление"],
-    "synonyms": ["arrival", "emergence", "onset"],
-    "example": "The <mark>advent</mark> of 1960s youth culture changed fashion forever."
+    "translations": [
+      "появление",
+      "наступление"
+    ],
+    "synonyms": [
+      "arrival",
+      "emergence",
+      "onset"
+    ],
+    "example": "The <mark>advent</mark> of 1960s youth culture changed fashion forever.",
+    "theme": "Society",
+    "common_mistake": "'Advent' (arrival) ≠ 'advert' (an advertisement)."
   },
   {
     "word": "mustard",
     "transcription": "/ˈmʌstəd/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["горчичный (цвет)", "горчица"],
-    "synonyms": ["yellow-ochre", "amber", "dijon"],
-    "example": "She bought a <mark>mustard</mark> yellow scarf."
+    "translations": [
+      "горчичный (цвет)",
+      "горчица"
+    ],
+    "synonyms": [
+      "yellow-ochre",
+      "amber",
+      "dijon"
+    ],
+    "example": "She bought a <mark>mustard</mark> yellow scarf.",
+    "theme": "Beauty",
+    "common_mistake": ""
   },
   {
     "word": "ginger",
     "transcription": "/ˈdʒɪndʒə/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["рыжий (о волосах)", "имбирь"],
-    "synonyms": ["red-haired", "auburn", "copper"],
-    "example": "Her brother has bright <mark>ginger</mark> hair."
+    "translations": [
+      "рыжий (о волосах)",
+      "имбирь"
+    ],
+    "synonyms": [
+      "red-haired",
+      "auburn",
+      "copper"
+    ],
+    "example": "Her brother has bright <mark>ginger</mark> hair.",
+    "theme": "Beauty",
+    "common_mistake": "Can mean the spice OR red hair (UK slang for redhead)."
   },
   {
     "word": "redefining",
     "transcription": "/ˌriːdɪˈfaɪnɪŋ/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["переосмысливающий", "переопределяющий"],
-    "synonyms": ["reshaping", "reinventing", "reconceiving"],
-    "example": "The 1960s were <mark>redefining</mark> masculinity in fashion."
+    "translations": [
+      "переосмысливающий",
+      "переопределяющий"
+    ],
+    "synonyms": [
+      "reshaping",
+      "reinventing",
+      "reconceiving"
+    ],
+    "example": "The 1960s were <mark>redefining</mark> masculinity in fashion.",
+    "theme": "Society",
+    "common_mistake": ""
   },
   {
     "word": "misfits",
     "transcription": "/ˈmɪsfɪts/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["белые вороны", "непохожие на других"],
-    "synonyms": ["outsiders", "nonconformists", "oddballs"],
-    "example": "The film celebrated <mark>misfits</mark> who didn't fit the mould."
+    "translations": [
+      "белые вороны",
+      "непохожие на других"
+    ],
+    "synonyms": [
+      "outsiders",
+      "nonconformists",
+      "oddballs"
+    ],
+    "example": "The film celebrated <mark>misfits</mark> who didn't fit the mould.",
+    "theme": "Society",
+    "common_mistake": ""
   },
   {
     "word": "hippies",
     "transcription": "/ˈhɪpiz/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["хиппи"],
-    "synonyms": ["flower children", "bohemians", "counterculture"],
-    "example": "The <mark>hippies</mark> rejected mainstream fashion entirely."
+    "translations": [
+      "хиппи"
+    ],
+    "synonyms": [
+      "flower children",
+      "bohemians",
+      "counterculture"
+    ],
+    "example": "The <mark>hippies</mark> rejected mainstream fashion entirely.",
+    "theme": "Society",
+    "common_mistake": "Plural of 'hippie' (the person). 'Hippy' as adjective = having wide hips."
   },
   {
     "word": "skimpy",
     "transcription": "/ˈskɪmpi/",
     "sentiment": "Negative",
     "meanings_count": 2,
-    "translations": ["открытый (об одежде)", "скудный"],
-    "synonyms": ["scanty", "revealing", "minimal"],
-    "example": "The lifeguard wore a <mark>skimpy</mark> swimsuit."
+    "translations": [
+      "открытый (об одежде)",
+      "скудный"
+    ],
+    "synonyms": [
+      "scanty",
+      "revealing",
+      "minimal"
+    ],
+    "example": "The lifeguard wore a <mark>skimpy</mark> swimsuit.",
+    "theme": "Fashion",
+    "common_mistake": ""
   },
   {
     "word": "carapace",
     "transcription": "/ˈkærəpeɪs/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["панцирь", "защитная оболочка"],
-    "synonyms": ["shell", "armor", "casing"],
-    "example": "The structured coat acted like a <mark>carapace</mark> around the body."
+    "translations": [
+      "панцирь",
+      "защитная оболочка"
+    ],
+    "synonyms": [
+      "shell",
+      "armor",
+      "casing"
+    ],
+    "example": "The structured coat acted like a <mark>carapace</mark> around the body.",
+    "theme": "Fashion",
+    "common_mistake": ""
   },
   {
     "word": "buckled",
     "transcription": "/ˈbʌkəld/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["застёгнутый на пряжку", "погнутый"],
-    "synonyms": ["fastened", "strapped", "clasped"],
-    "example": "She wore a <mark>buckled</mark> belt around her waist."
+    "translations": [
+      "застёгнутый на пряжку",
+      "погнутый"
+    ],
+    "synonyms": [
+      "fastened",
+      "strapped",
+      "clasped"
+    ],
+    "example": "She wore a <mark>buckled</mark> belt around her waist.",
+    "theme": "Fashion",
+    "common_mistake": "Two senses: 'buckled' (fastened) and 'buckled' (collapsed under pressure)."
   },
   {
     "word": "insertion",
     "transcription": "/ɪnˈsɜːʃən/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["вставка", "вшивка"],
-    "synonyms": ["inset", "addition", "inclusion"],
-    "example": "The lace <mark>insertion</mark> on the sleeve was hand-stitched."
+    "translations": [
+      "вставка",
+      "вшивка"
+    ],
+    "synonyms": [
+      "inset",
+      "addition",
+      "inclusion"
+    ],
+    "example": "The lace <mark>insertion</mark> on the sleeve was hand-stitched.",
+    "theme": "Fashion",
+    "common_mistake": ""
   },
   {
     "word": "interchangeable",
     "transcription": "/ˌɪntəˈtʃeɪndʒəbəl/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["взаимозаменяемый"],
-    "synonyms": ["substitutable", "exchangeable", "equivalent"],
-    "example": "These two parts are completely <mark>interchangeable</mark>."
+    "translations": [
+      "взаимозаменяемый"
+    ],
+    "synonyms": [
+      "substitutable",
+      "exchangeable",
+      "equivalent"
+    ],
+    "example": "These two parts are completely <mark>interchangeable</mark>.",
+    "theme": "Abstract",
+    "common_mistake": ""
   },
   {
     "word": "pantyhose",
     "transcription": "/ˈpæntɪhəʊz/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["колготки"],
-    "synonyms": ["tights", "stockings", "hosiery"],
-    "example": "She slipped on a pair of nude <mark>pantyhose</mark>."
+    "translations": [
+      "колготки"
+    ],
+    "synonyms": [
+      "tights",
+      "stockings",
+      "hosiery"
+    ],
+    "example": "She slipped on a pair of nude <mark>pantyhose</mark>.",
+    "theme": "Fashion",
+    "common_mistake": "Plural-form noun: 'a pair of pantyhose', not 'a pantyhose'."
   },
   {
     "word": "seduction",
     "transcription": "/sɪˈdʌkʃən/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["соблазнение", "очарование"],
-    "synonyms": ["allure", "enticement", "temptation"],
-    "example": "The dress was designed for pure <mark>seduction</mark>."
+    "translations": [
+      "соблазнение",
+      "очарование"
+    ],
+    "synonyms": [
+      "allure",
+      "enticement",
+      "temptation"
+    ],
+    "example": "The dress was designed for pure <mark>seduction</mark>.",
+    "theme": "Relationships",
+    "common_mistake": ""
   },
   {
     "word": "infiltrated",
     "transcription": "/ˈɪnfɪltreɪtɪd/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["проникнул", "просочился"],
-    "synonyms": ["penetrated", "entered", "permeated"],
-    "example": "Street style <mark>infiltrated</mark> high fashion in the 1990s."
+    "translations": [
+      "проникнул",
+      "просочился"
+    ],
+    "synonyms": [
+      "penetrated",
+      "entered",
+      "permeated"
+    ],
+    "example": "Street style <mark>infiltrated</mark> high fashion in the 1990s.",
+    "theme": "Society",
+    "common_mistake": ""
   },
   {
     "word": "sprang up",
     "transcription": "/spræŋ ʌp/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["возник внезапно", "появился"],
-    "synonyms": ["emerged", "appeared", "arose"],
-    "example": "New boutiques <mark>sprang up</mark> all over the city."
+    "translations": [
+      "возник внезапно",
+      "появился"
+    ],
+    "synonyms": [
+      "emerged",
+      "appeared",
+      "arose"
+    ],
+    "example": "New boutiques <mark>sprang up</mark> all over the city.",
+    "theme": "Society",
+    "common_mistake": "Past tense is 'sprang' (preferred) or 'sprung' (also accepted)."
   },
   {
     "word": "periphery",
     "transcription": "/pəˈrɪfəri/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["периферия", "край"],
-    "synonyms": ["edge", "outskirts", "fringe"],
-    "example": "Punk style sat on the <mark>periphery</mark> of mainstream fashion."
+    "translations": [
+      "периферия",
+      "край"
+    ],
+    "synonyms": [
+      "edge",
+      "outskirts",
+      "fringe"
+    ],
+    "example": "Punk style sat on the <mark>periphery</mark> of mainstream fashion.",
+    "theme": "Society",
+    "common_mistake": "'Periphery' (noun: the edge) ≠ 'peripheral' (adjective)."
   },
   {
     "word": "midriffs",
     "transcription": "/ˈmɪdrɪfs/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["талия", "живот (часть тела)"],
-    "synonyms": ["bellies", "waists", "torsos"],
-    "example": "Crop tops exposed bare <mark>midriffs</mark>."
+    "translations": [
+      "талия",
+      "живот (часть тела)"
+    ],
+    "synonyms": [
+      "bellies",
+      "waists",
+      "torsos"
+    ],
+    "example": "Crop tops exposed bare <mark>midriffs</mark>.",
+    "theme": "Beauty",
+    "common_mistake": ""
   },
   {
     "word": "contours",
     "transcription": "/ˈkɒntʊəz/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["контуры", "очертания"],
-    "synonyms": ["outlines", "shapes", "silhouettes"],
-    "example": "The fabric followed the <mark>contours</mark> of her body."
+    "translations": [
+      "контуры",
+      "очертания"
+    ],
+    "synonyms": [
+      "outlines",
+      "shapes",
+      "silhouettes"
+    ],
+    "example": "The fabric followed the <mark>contours</mark> of her body.",
+    "theme": "Beauty",
+    "common_mistake": ""
   },
   {
     "word": "exacerbated",
     "transcription": "/ɪɡˈzæsəbeɪtɪd/",
     "sentiment": "Negative",
     "meanings_count": 1,
-    "translations": ["усугубил", "обострил"],
-    "synonyms": ["worsened", "aggravated", "intensified"],
-    "example": "His comments only <mark>exacerbated</mark> the situation."
+    "translations": [
+      "усугубил",
+      "обострил"
+    ],
+    "synonyms": [
+      "worsened",
+      "aggravated",
+      "intensified"
+    ],
+    "example": "His comments only <mark>exacerbated</mark> the situation.",
+    "theme": "Emotions",
+    "common_mistake": "'Exacerbated' (made worse) ≠ 'exasperated' (extremely annoyed). Very common mix-up."
   },
   {
     "word": "consolidate",
     "transcription": "/kənˈsɒlɪdeɪt/",
     "sentiment": "Positive",
     "meanings_count": 2,
-    "translations": ["укрепить", "объединить"],
-    "synonyms": ["strengthen", "unify", "merge"],
-    "example": "The brand worked to <mark>consolidate</mark> its position in the market."
+    "translations": [
+      "укрепить",
+      "объединить"
+    ],
+    "synonyms": [
+      "strengthen",
+      "unify",
+      "merge"
+    ],
+    "example": "The brand worked to <mark>consolidate</mark> its position in the market.",
+    "theme": "Media & Business",
+    "common_mistake": ""
   },
   {
     "word": "post-war regeneration",
     "transcription": "/ˌpəʊstˈwɔː rɪˌdʒenəˈreɪʃən/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["послевоенное восстановление"],
-    "synonyms": ["post-war recovery", "post-war revival", "post-war renewal"],
-    "example": "Fashion played a role in Europe's <mark>post-war regeneration</mark>."
+    "translations": [
+      "послевоенное восстановление"
+    ],
+    "synonyms": [
+      "post-war recovery",
+      "post-war revival",
+      "post-war renewal"
+    ],
+    "example": "Fashion played a role in Europe's <mark>post-war regeneration</mark>.",
+    "theme": "Conflict & History",
+    "common_mistake": "Note the hyphen: 'post-war', not 'postwar' (in British English)."
   },
   {
     "word": "stature",
     "transcription": "/ˈstætʃə/",
     "sentiment": "Positive",
     "meanings_count": 2,
-    "translations": ["статус", "репутация", "рост"],
-    "synonyms": ["standing", "prestige", "reputation"],
-    "example": "Dior's <mark>stature</mark> as a designer grew rapidly."
+    "translations": [
+      "статус",
+      "репутация",
+      "рост"
+    ],
+    "synonyms": [
+      "standing",
+      "prestige",
+      "reputation"
+    ],
+    "example": "Dior's <mark>stature</mark> as a designer grew rapidly.",
+    "theme": "Personality",
+    "common_mistake": "'Stature' (status/height) ≠ 'statue' (sculpture) ≠ 'statute' (law)."
   },
   {
     "word": "promulgated",
     "transcription": "/ˈprɒməlɡeɪtɪd/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["распространял", "провозглашал"],
-    "synonyms": ["spread", "disseminated", "proclaimed"],
-    "example": "Magazines <mark>promulgated</mark> the new look across Europe."
+    "translations": [
+      "распространял",
+      "провозглашал"
+    ],
+    "synonyms": [
+      "spread",
+      "disseminated",
+      "proclaimed"
+    ],
+    "example": "Magazines <mark>promulgated</mark> the new look across Europe.",
+    "theme": "Society",
+    "common_mistake": ""
   },
   {
     "word": "taupe",
     "transcription": "/təʊp/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["тёмно-серо-коричневый цвет"],
-    "synonyms": ["greige", "mushroom", "warm grey"],
-    "example": "The walls were painted a soft <mark>taupe</mark>."
+    "translations": [
+      "тёмно-серо-коричневый цвет"
+    ],
+    "synonyms": [
+      "greige",
+      "mushroom",
+      "warm grey"
+    ],
+    "example": "The walls were painted a soft <mark>taupe</mark>.",
+    "theme": "Beauty",
+    "common_mistake": "Pronounced /təʊp/ — like 'tope', not 'tow-pay'."
   },
   {
     "word": "beige",
     "transcription": "/beɪʒ/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["бежевый"],
-    "synonyms": ["cream", "tan", "buff"],
-    "example": "She wore a classic <mark>beige</mark> trench coat."
+    "translations": [
+      "бежевый"
+    ],
+    "synonyms": [
+      "cream",
+      "tan",
+      "buff"
+    ],
+    "example": "She wore a classic <mark>beige</mark> trench coat.",
+    "theme": "Beauty",
+    "common_mistake": "Pronounced /beɪʒ/ — like 'baizh', not 'beig'."
   },
   {
     "word": "ivory",
     "transcription": "/ˈaɪvəri/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["слоновая кость (цвет)", "слоновая кость (материал)"],
-    "synonyms": ["off-white", "cream", "bone"],
-    "example": "She chose an <mark>ivory</mark> wedding dress instead of pure white."
+    "translations": [
+      "слоновая кость (цвет)",
+      "слоновая кость (материал)"
+    ],
+    "synonyms": [
+      "off-white",
+      "cream",
+      "bone"
+    ],
+    "example": "She chose an <mark>ivory</mark> wedding dress instead of pure white.",
+    "theme": "Beauty",
+    "common_mistake": ""
   },
   {
     "word": "flattering",
     "transcription": "/ˈflætərɪŋ/",
     "sentiment": "Positive",
     "meanings_count": 2,
-    "translations": ["выгодно подчёркивающий", "лестный"],
-    "synonyms": ["becoming", "complimentary", "favorable"],
-    "example": "That cut is incredibly <mark>flattering</mark> on you."
+    "translations": [
+      "выгодно подчёркивающий",
+      "лестный"
+    ],
+    "synonyms": [
+      "becoming",
+      "complimentary",
+      "favorable"
+    ],
+    "example": "That cut is incredibly <mark>flattering</mark> on you.",
+    "theme": "Beauty",
+    "common_mistake": "'Flattering' (looks good) ≠ 'flattening' (making flat)."
   },
   {
     "word": "embodied",
     "transcription": "/ɪmˈbɒdid/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["воплощал", "олицетворял"],
-    "synonyms": ["personified", "represented", "incarnated"],
-    "example": "She <mark>embodied</mark> the elegance of a different era."
+    "translations": [
+      "воплощал",
+      "олицетворял"
+    ],
+    "synonyms": [
+      "personified",
+      "represented",
+      "incarnated"
+    ],
+    "example": "She <mark>embodied</mark> the elegance of a different era.",
+    "theme": "Personality",
+    "common_mistake": ""
   },
   {
     "word": "voluptuous",
     "transcription": "/vəˈlʌptʃuəs/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["сладострастный", "пышный"],
-    "synonyms": ["curvaceous", "shapely", "sensuous"],
-    "example": "The fashion of the era favored a <mark>voluptuous</mark> figure."
+    "translations": [
+      "сладострастный",
+      "пышный"
+    ],
+    "synonyms": [
+      "curvaceous",
+      "shapely",
+      "sensuous"
+    ],
+    "example": "The fashion of the era favored a <mark>voluptuous</mark> figure.",
+    "theme": "Beauty",
+    "common_mistake": "Spelling: vo-lup-tu-ous. A common typo is 'voluptous'."
   },
   {
     "word": "bricolage",
     "transcription": "/ˌbrɪkəˈlɑːʒ/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["конструирование из подручных средств", "коллаж"],
-    "synonyms": ["assemblage", "collage", "patchwork"],
-    "example": "Her style is a clever <mark>bricolage</mark> of vintage and modern."
+    "translations": [
+      "конструирование из подручных средств",
+      "коллаж"
+    ],
+    "synonyms": [
+      "assemblage",
+      "collage",
+      "patchwork"
+    ],
+    "example": "Her style is a clever <mark>bricolage</mark> of vintage and modern.",
+    "theme": "Fashion",
+    "common_mistake": "French origin. Pronounced /ˌbrɪkəˈlɑːʒ/, not 'brick-o-lage'."
   },
   {
     "word": "promulgation",
     "transcription": "/ˌprɒməlˈɡeɪʃən/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["распространение", "провозглашение"],
-    "synonyms": ["dissemination", "spreading", "proclamation"],
-    "example": "The <mark>promulgation</mark> of the new style was rapid."
+    "translations": [
+      "распространение",
+      "провозглашение"
+    ],
+    "synonyms": [
+      "dissemination",
+      "spreading",
+      "proclamation"
+    ],
+    "example": "The <mark>promulgation</mark> of the new style was rapid.",
+    "theme": "Society",
+    "common_mistake": ""
   },
   {
     "word": "rejuvenated",
     "transcription": "/rɪˈdʒuːvəneɪtɪd/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["омолодил", "оживил"],
-    "synonyms": ["revitalized", "refreshed", "renewed"],
-    "example": "The new collection <mark>rejuvenated</mark> the fashion house."
+    "translations": [
+      "омолодил",
+      "оживил"
+    ],
+    "synonyms": [
+      "revitalized",
+      "refreshed",
+      "renewed"
+    ],
+    "example": "The new collection <mark>rejuvenated</mark> the fashion house.",
+    "theme": "Society",
+    "common_mistake": ""
   },
   {
     "word": "tweed suit",
     "transcription": "/twiːd suːt/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["твидовый костюм"],
-    "synonyms": ["wool suit", "tweed ensemble", "country suit"],
-    "example": "He wore a classic <mark>tweed suit</mark> to the country club."
+    "translations": [
+      "твидовый костюм"
+    ],
+    "synonyms": [
+      "wool suit",
+      "tweed ensemble",
+      "country suit"
+    ],
+    "example": "He wore a classic <mark>tweed suit</mark> to the country club.",
+    "theme": "Fashion",
+    "common_mistake": ""
   },
   {
     "word": "behemoths",
     "transcription": "/bɪˈhiːməθs/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["гиганты", "колоссы"],
-    "synonyms": ["giants", "titans", "monsters"],
-    "example": "Fashion <mark>behemoths</mark> like LVMH dominate the industry."
+    "translations": [
+      "гиганты",
+      "колоссы"
+    ],
+    "synonyms": [
+      "giants",
+      "titans",
+      "monsters"
+    ],
+    "example": "Fashion <mark>behemoths</mark> like LVMH dominate the industry.",
+    "theme": "Media & Business",
+    "common_mistake": "Pronounced /bɪˈhiːməθs/. Note the silent 'h' is optional."
   },
   {
     "word": "conglomerate",
     "transcription": "/kənˈɡlɒmərət/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["конгломерат", "крупная корпорация"],
-    "synonyms": ["corporation", "group", "syndicate"],
-    "example": "The brand was bought by a media <mark>conglomerate</mark>."
+    "translations": [
+      "конгломерат",
+      "крупная корпорация"
+    ],
+    "synonyms": [
+      "corporation",
+      "group",
+      "syndicate"
+    ],
+    "example": "The brand was bought by a media <mark>conglomerate</mark>.",
+    "theme": "Media & Business",
+    "common_mistake": ""
   },
   {
     "word": "merger",
     "transcription": "/ˈmɜːdʒə/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["слияние (компаний)"],
-    "synonyms": ["amalgamation", "consolidation", "fusion"],
-    "example": "The <mark>merger</mark> created the largest luxury group in the world."
+    "translations": [
+      "слияние (компаний)"
+    ],
+    "synonyms": [
+      "amalgamation",
+      "consolidation",
+      "fusion"
+    ],
+    "example": "The <mark>merger</mark> created the largest luxury group in the world.",
+    "theme": "Media & Business",
+    "common_mistake": ""
   },
   {
     "word": "break down",
     "transcription": "/breɪk daʊn/",
     "sentiment": "Neutral",
     "meanings_count": 3,
-    "translations": ["разъяснять простыми словами", "сломаться", "разбить на части"],
-    "synonyms": ["simplify", "explain", "dissect"],
-    "example": "Hawking can <mark>break down</mark> physics for any reader."
+    "translations": [
+      "разъяснять простыми словами",
+      "сломаться",
+      "разбить на части"
+    ],
+    "synonyms": [
+      "simplify",
+      "explain",
+      "dissect"
+    ],
+    "example": "Hawking can <mark>break down</mark> physics for any reader.",
+    "theme": "Ideas & Science",
+    "common_mistake": "'Break down' (verb, two words) ≠ 'breakdown' (noun, one word)."
   },
   {
     "word": "mind-bending",
     "transcription": "/ˈmaɪndˌbendɪŋ/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["ошеломляющий", "взрывающий мозг"],
-    "synonyms": ["mind-blowing", "astonishing", "staggering"],
-    "example": "The book is full of <mark>mind-bending</mark> ideas about time."
+    "translations": [
+      "ошеломляющий",
+      "взрывающий мозг"
+    ],
+    "synonyms": [
+      "mind-blowing",
+      "astonishing",
+      "staggering"
+    ],
+    "example": "The book is full of <mark>mind-bending</mark> ideas about time.",
+    "theme": "Ideas & Science",
+    "common_mistake": "Hyphenated when used as an adjective: 'mind-bending ideas'."
   },
   {
     "word": "falls into",
     "transcription": "/fɔːlz ˈɪntuː/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["относится к", "попадает в (категорию)"],
-    "synonyms": ["belongs to", "fits into", "comes under"],
-    "example": "This book <mark>falls into</mark> the popular science genre."
+    "translations": [
+      "относится к",
+      "попадает в (категорию)"
+    ],
+    "synonyms": [
+      "belongs to",
+      "fits into",
+      "comes under"
+    ],
+    "example": "This book <mark>falls into</mark> the popular science genre.",
+    "theme": "Ideas & Science",
+    "common_mistake": ""
   },
   {
     "word": "came into being",
     "transcription": "/keɪm ˈɪntuː ˈbiːɪŋ/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["возник", "появился на свет"],
-    "synonyms": ["originated", "emerged", "was born"],
-    "example": "He explains how the universe <mark>came into being</mark>."
+    "translations": [
+      "возник",
+      "появился на свет"
+    ],
+    "synonyms": [
+      "originated",
+      "emerged",
+      "was born"
+    ],
+    "example": "He explains how the universe <mark>came into being</mark>.",
+    "theme": "Ideas & Science",
+    "common_mistake": ""
   },
   {
     "word": "came across",
     "transcription": "/keɪm əˈkrɒs/",
     "sentiment": "Neutral",
     "meanings_count": 2,
-    "translations": ["наткнулся на", "произвёл впечатление"],
-    "synonyms": ["found", "encountered", "stumbled upon"],
-    "example": "I <mark>came across</mark> this book in a tiny secondhand shop."
+    "translations": [
+      "наткнулся на",
+      "произвёл впечатление"
+    ],
+    "synonyms": [
+      "found",
+      "encountered",
+      "stumbled upon"
+    ],
+    "example": "I <mark>came across</mark> this book in a tiny secondhand shop.",
+    "theme": "Relationships",
+    "common_mistake": "Two senses: 'came across X' = found by chance, OR = gave a certain impression."
   },
   {
     "word": "on the same wavelength",
     "transcription": "/ɒn ðə seɪm ˈweɪvleŋθ/",
     "sentiment": "Positive",
     "meanings_count": 1,
-    "translations": ["на одной волне", "понимать друг друга"],
-    "synonyms": ["in sync", "like-minded", "in tune"],
-    "example": "We're really <mark>on the same wavelength</mark> about most things."
+    "translations": [
+      "на одной волне",
+      "понимать друг друга"
+    ],
+    "synonyms": [
+      "in sync",
+      "like-minded",
+      "in tune"
+    ],
+    "example": "We're really <mark>on the same wavelength</mark> about most things.",
+    "theme": "Relationships",
+    "common_mistake": ""
   },
   {
     "word": "pushed me to",
     "transcription": "/pʊʃt mi tuː/",
     "sentiment": "Neutral",
     "meanings_count": 1,
-    "translations": ["подтолкнул меня к", "заставил меня"],
-    "synonyms": ["urged me to", "encouraged me to", "prompted me to"],
-    "example": "My boyfriend <mark>pushed me to</mark> finally read this book."
+    "translations": [
+      "подтолкнул меня к",
+      "заставил меня"
+    ],
+    "synonyms": [
+      "urged me to",
+      "encouraged me to",
+      "prompted me to"
+    ],
+    "example": "My boyfriend <mark>pushed me to</mark> finally read this book.",
+    "theme": "Relationships",
+    "common_mistake": ""
   }
 ]

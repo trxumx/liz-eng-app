@@ -13,6 +13,17 @@
         <div class="welcome-inner">
           <h1 class="title">English Vocabulary</h1>
           <p class="subtitle">A little study deck.</p>
+
+          <div class="deck-picker">
+            <label class="deck-picker-label" for="deck-select">Deck</label>
+            <div class="deck-select-wrap">
+              <select id="deck-select" class="deck-select" aria-label="Choose a deck">
+                <option value="all">All Words</option>
+              </select>
+            </div>
+            <div class="deck-picker-meta" id="deck-meta">— words</div>
+          </div>
+
           <button id="start-btn" class="start-btn" data-default="Start studying" data-hover="hi lizzy &lt;3">
             <span class="start-btn-label">Start studying</span>
           </button>
@@ -25,6 +36,15 @@
           <div class="brand">Vocab</div>
           <div id="home-progress" class="page-sub"></div>
         </header>
+
+        <div class="deck-banner">
+          <div>
+            <span class="deck-banner-label">Deck</span>
+            <span class="deck-banner-name" id="home-deck-name">All Words</span>
+            <span class="deck-banner-count" id="home-deck-count"></span>
+          </div>
+          <button class="ghost-btn" data-go="welcome">Change</button>
+        </div>
         <div class="menu">
           <button class="menu-card" data-go="study">
             <div class="menu-title">Study cards</div>
@@ -77,6 +97,15 @@
                 <div class="back-section">
                   <div class="back-label">Example</div>
                   <div id="card-example" class="back-content example"></div>
+                </div>
+                <div class="back-section mistake-section hidden" id="card-mistake-section">
+                  <div class="mistake-block">
+                    <div class="mistake-icon" aria-hidden="true">⚠</div>
+                    <div>
+                      <div class="mistake-label">Common mistake</div>
+                      <div class="mistake-text" id="card-mistake"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
