@@ -217,6 +217,8 @@
       if (e.key === "ArrowLeft") studyGo(-1);
       else if (e.key === "ArrowRight") studyGo(1);
     } else if (view === "quiz") {
+      // Don't intercept keys that belong to the typing input/form
+      if (e.target && (e.target.id === "quiz-input" || e.target.tagName === "INPUT")) return;
       // 1..4 to pick option
       const n = parseInt(e.key, 10);
       if (n >= 1 && n <= 4) {
@@ -236,11 +238,23 @@
   const quizPromptLabel = document.getElementById("quiz-prompt-label");
   const quizPrompt = document.getElementById("quiz-prompt");
   const quizOptions = document.getElementById("quiz-options");
+  const quizTyping = document.getElementById("quiz-typing");
+  const quizInput = document.getElementById("quiz-input");
+  const quizSubmitBtn = document.getElementById("quiz-submit-btn");
   const quizFeedback = document.getElementById("quiz-feedback");
   const quizNextBtn = document.getElementById("quiz-next-btn");
   const quizCurrentEl = document.getElementById("quiz-current");
   const quizTotalEl = document.getElementById("quiz-total");
   const quizScoreEl = document.getElementById("quiz-score");
+
+  function normalize(s) {
+    return (s || "")
+      .toString()
+      .trim()
+      .toLowerCase()
+      .replace(/[\.,!\?;:"']+/g, "")
+      .replace(/\s+/g, " ");
+  }
 
   function pickRadio(name) {
     const el = document.querySelector(`input[name="${name}"]:checked`);
@@ -274,30 +288,32 @@
     const chosen = candidates.slice(0, count);
 
     return chosen.map((w) => {
-      // For en-ru: prompt = English word, answer = first translation (RU), options from translations of other words
-      // For ru-en: prompt = first translation, answer = English word, options from other words
+      // en-ru: prompt = English, answer = RU translation
+      // ru-en: prompt = RU, answer = English (multiple choice)
+      // type:  prompt = RU, answer = English (typed)
       const isEnRu = mode === "en-ru";
       const promptText = isEnRu ? w.word : (w.translations[0] || w.word);
       const answerText = isEnRu ? (w.translations[0] || "—") : w.word;
 
-      const distractorPool = words.filter((x) => x.word !== w.word);
-      const distractors = shuffle(distractorPool).slice(0, 8).map((x) => {
-        return isEnRu ? (x.translations[0] || x.word) : x.word;
-      });
-      // unique, not equal to answer
-      const seen = new Set([answerText]);
-      const uniqueDistractors = [];
-      for (const d of distractors) {
-        if (!seen.has(d)) {
-          seen.add(d);
-          uniqueDistractors.push(d);
-          if (uniqueDistractors.length === 3) break;
+      let options = null;
+      if (mode !== "type") {
+        const distractorPool = words.filter((x) => x.word !== w.word);
+        const distractors = shuffle(distractorPool).slice(0, 8).map((x) => {
+          return isEnRu ? (x.translations[0] || x.word) : x.word;
+        });
+        const seen = new Set([answerText]);
+        const uniqueDistractors = [];
+        for (const d of distractors) {
+          if (!seen.has(d)) {
+            seen.add(d);
+            uniqueDistractors.push(d);
+            if (uniqueDistractors.length === 3) break;
+          }
         }
+        while (uniqueDistractors.length < 3) uniqueDistractors.push("—");
+        options = shuffle([answerText, ...uniqueDistractors]);
       }
-      // pad if pool is small
-      while (uniqueDistractors.length < 3) uniqueDistractors.push("—");
 
-      const options = shuffle([answerText, ...uniqueDistractors]);
       return {
         key: w.word,
         prompt: promptText,
@@ -333,21 +349,39 @@
     quizCurrentEl.textContent = String(quizState.index + 1);
     quizTotalEl.textContent = String(quizState.questions.length);
     quizScoreEl.textContent = `${quizState.score}✓`;
-    quizPromptLabel.textContent = q.mode === "en-ru" ? "Translate to Russian" : "Translate to English";
+    let label;
+    if (q.mode === "en-ru") label = "Translate to Russian";
+    else if (q.mode === "ru-en") label = "Translate to English";
+    else label = "Type the English word";
+    quizPromptLabel.textContent = label;
     quizPrompt.textContent = q.prompt;
     quizFeedback.textContent = "";
     quizFeedback.className = "quiz-feedback";
     quizNextBtn.classList.add("hidden");
 
-    quizOptions.innerHTML = "";
-    q.options.forEach((opt, i) => {
-      const btn = document.createElement("button");
-      btn.className = "quiz-option";
-      btn.textContent = `${i + 1}. ${opt}`;
-      btn.dataset.value = opt;
-      btn.addEventListener("click", () => onPickOption(btn, q));
-      quizOptions.appendChild(btn);
-    });
+    if (q.mode === "type") {
+      quizOptions.innerHTML = "";
+      quizOptions.classList.add("hidden");
+      quizTyping.classList.remove("hidden");
+      quizInput.value = "";
+      quizInput.disabled = false;
+      quizSubmitBtn.disabled = false;
+      quizInput.className = "quiz-input";
+      // give the DOM a tick so focus works on screen change
+      setTimeout(() => quizInput.focus(), 30);
+    } else {
+      quizTyping.classList.add("hidden");
+      quizOptions.classList.remove("hidden");
+      quizOptions.innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.className = "quiz-option";
+        btn.textContent = `${i + 1}. ${opt}`;
+        btn.dataset.value = opt;
+        btn.addEventListener("click", () => onPickOption(btn, q));
+        quizOptions.appendChild(btn);
+      });
+    }
   }
 
   function onPickOption(btn, q) {
@@ -378,6 +412,36 @@
     quizNextBtn.classList.remove("hidden");
     quizNextBtn.focus();
   }
+
+  quizTyping.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!quizState) return;
+    const q = quizState.questions[quizState.index];
+    if (q.mode !== "type") return;
+    if (quizInput.disabled) return; // already submitted
+
+    const typed = quizInput.value;
+    const correct = normalize(typed) === normalize(q.answer) && normalize(typed).length > 0;
+
+    quizInput.disabled = true;
+    quizSubmitBtn.disabled = true;
+    quizInput.classList.add(correct ? "correct" : "wrong");
+
+    if (correct) {
+      quizState.score += 1;
+      quizFeedback.textContent = "Correct!";
+      quizFeedback.className = "quiz-feedback correct";
+    } else {
+      quizFeedback.textContent = `Answer: ${q.answer}`;
+      quizFeedback.className = "quiz-feedback wrong";
+    }
+
+    quizState.answers.push({ q, picked: typed.trim() || "(empty)", correct });
+    recordQuiz(q.key, correct);
+    quizScoreEl.textContent = `${quizState.score}✓`;
+    quizNextBtn.classList.remove("hidden");
+    quizNextBtn.focus();
+  });
 
   quizNextBtn.addEventListener("click", () => {
     if (!quizState) return;

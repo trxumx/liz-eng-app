@@ -465,6 +465,45 @@ html, body {
 
 .quiz-next { align-self: center; min-width: 160px; }
 
+.quiz-typing {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+.quiz-input {
+  flex: 1;
+  padding: 16px 18px;
+  font-size: 17px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.quiz-input:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(26,26,26,0.08);
+}
+.quiz-input.correct {
+  border-color: var(--positive);
+  background: var(--positive-bg);
+  color: var(--positive);
+}
+.quiz-input.wrong {
+  border-color: var(--negative);
+  background: var(--negative-bg);
+  color: var(--negative);
+}
+.quiz-input:disabled { cursor: default; }
+.quiz-typing .primary-btn { padding: 0 22px; }
+
+@media (max-width: 480px) {
+  .quiz-typing { flex-direction: column; }
+  .quiz-typing .primary-btn { padding: 14px 22px; }
+}
+
 @media (max-width: 480px) {
   .quiz-options { grid-template-columns: 1fr; }
 }
