@@ -1,184 +1,304 @@
-// One-shot migration: adds `theme` and `common_mistake` to dictionary.json
-// Run with: node _migrate.js
-// Safe to re-run: existing values are preserved unless --force is passed.
+// Consolidate the raw dictionary at dict/dictionary.json into the deployed
+// dictionary at ./dictionary.json:
+//   - 129+ free-form themes -> ~14 macro themes via the THEME_MAP below.
+//   - Anything not in the map (or empty) goes to "Other".
+//   - When `example` does not contain a <mark> tag, we try to wrap the
+//     headword in <mark>...</mark> using a case-insensitive whole-word match.
+//
+// Run:  node _migrate.js
+// Use --dry to inspect without writing.
 
 const fs = require("fs");
 const path = require("path");
 
-const FILE = path.join(__dirname, "dictionary.json");
-const force = process.argv.includes("--force");
+const SRC = path.join(__dirname, "dict", "dictionary.json");
+const OUT = path.join(__dirname, "dictionary.json");
+const dryRun = process.argv.includes("--dry");
 
-const themes = {
-  "tumultuous": "Emotions",
-  "whirlwind": "Relationships",
-  "abnormally": "Personality",
-  "the show aired": "Media & Business",
-  "call out": "Society",
-  "mass appeal": "Media & Business",
-  "grip": "Abstract",
-  "ash": "Beauty",
-  "inflated": "Personality",
-  "spouse": "Relationships",
-  "superiority": "Personality",
-  "feels off-putting": "Emotions",
-  "the outlet": "Media & Business",
-  "pitched as": "Media & Business",
-  "ditzy": "Personality",
-  "bleaching": "Beauty",
-  "highlighting": "Beauty",
-  "psyop": "Society",
-  "connotation": "Ideas & Science",
-  "youthfulness": "Beauty",
-  "cite": "Ideas & Science",
-  "bleaches": "Beauty",
-  "cherished": "Emotions",
-  "ends of the spectrum": "Ideas & Science",
-  "morally loaded": "Society",
-  "paragon": "Personality",
-  "endured": "Abstract",
-  "emblem": "Society",
-  "chicness": "Fashion",
-  "blondness": "Beauty",
-  "woven fabrics": "Fashion",
-  "draped": "Fashion",
-  "heralded": "Society",
-  "outbreak": "Conflict & History",
-  "conscription": "Conflict & History",
-  "retained": "Abstract",
-  "upturned": "Abstract",
-  "forbidding": "Personality",
-  "dormant": "Abstract",
-  "marvellous": "Emotions",
-  "haute couture": "Fashion",
-  "defiance": "Personality",
-  "hourglass figure": "Beauty",
-  "revival": "Society",
-  "segued into": "Abstract",
-  "staple": "Fashion",
-  "bodice": "Fashion",
-  "contoured": "Fashion",
-  "tyrannical": "Personality",
-  "chemise dress": "Fashion",
-  "demeanour": "Personality",
-  "overturned": "Society",
-  "advent": "Society",
-  "mustard": "Beauty",
-  "ginger": "Beauty",
-  "redefining": "Society",
-  "misfits": "Society",
-  "hippies": "Society",
-  "skimpy": "Fashion",
-  "carapace": "Fashion",
-  "buckled": "Fashion",
-  "insertion": "Fashion",
-  "interchangeable": "Abstract",
-  "pantyhose": "Fashion",
-  "seduction": "Relationships",
-  "infiltrated": "Society",
-  "sprang up": "Society",
-  "periphery": "Society",
-  "midriffs": "Beauty",
-  "contours": "Beauty",
-  "exacerbated": "Emotions",
-  "consolidate": "Media & Business",
-  "post-war regeneration": "Conflict & History",
-  "stature": "Personality",
-  "promulgated": "Society",
-  "taupe": "Beauty",
-  "beige": "Beauty",
-  "ivory": "Beauty",
-  "flattering": "Beauty",
-  "embodied": "Personality",
-  "voluptuous": "Beauty",
-  "bricolage": "Fashion",
-  "promulgation": "Society",
-  "rejuvenated": "Society",
-  "tweed suit": "Fashion",
-  "behemoths": "Media & Business",
-  "conglomerate": "Media & Business",
-  "merger": "Media & Business",
-  "break down": "Ideas & Science",
-  "mind-bending": "Ideas & Science",
-  "falls into": "Ideas & Science",
-  "came into being": "Ideas & Science",
-  "came across": "Relationships",
-  "on the same wavelength": "Relationships",
-  "pushed me to": "Relationships",
+// ---------- Theme consolidation ----------
+// Lowercase keys, normalized whitespace and slash. Anything not here -> "Other".
+const THEME_MAP = {
+  // --- Emotions ---
+  "emotions": "Emotions",
+  "emotion": "Emotions",
+  "emotion difficulty": "Emotions",
+  "emotional and psychological issues": "Emotions",
+  "feeling sadness and remorse": "Emotions",
+  "contentment fulfillment": "Emotions",
+  "contentment": "Emotions",
+  "pride": "Emotions",
+  "thought feeling": "Emotions",
+  "self-assurance": "Emotions",
+  "self assurance": "Emotions",
+  "sudden desire or change of mind especially one that is unusual or unexplained": "Emotions",
+  "to protect and care for someone lovingly": "Emotions",
+
+  // --- Personality ---
+  "personality": "Personality",
+  "behavior": "Personality",
+  "action behavior": "Personality",
+  "attitude or appearance": "Personality",
+  "characteristics": "Personality",
+  "description characteristics": "Personality",
+  "description": "Personality",
+  "conformity": "Personality",
+  "dedication loyalty": "Personality",
+  "discretion": "Personality",
+  "gentle and kindly": "Personality",
+  "harmlessness": "Personality",
+  "well-meaning and kindly": "Personality",
+  "well meaning and kindly": "Personality",
+
+  // --- Relationships ---
+  "relationships": "Relationships",
+  "social relationships": "Relationships",
+  "social etiquette and relationships": "Relationships",
+  "social norms": "Relationships",
+  "meeting overlap": "Relationships",
+  "to come together to form one mass or whole": "Relationships",
+
+  // --- Society ---
+  "society": "Society",
+  "politics and law": "Society",
+  "politics and tradition": "Society",
+  "law and finance": "Society",
+  "law and order": "Society",
+  "ethics values": "Society",
+  "morality": "Society",
+  "responsibility and accountability": "Society",
+  "officially or legally prohibit something": "Society",
+  "official recommended": "Society",
+  "formal situations": "Society",
+  "clear (someone) of blame or suspicion": "Society",
+
+  // --- Business ---
+  "business economics": "Business",
+  "business or teamwork": "Business",
+  "media & business": "Business",
+  "media business": "Business",
+  "financial and economic issues": "Business",
+  "manufacturing and industry": "Business",
+  "money": "Business",
+  "practicality assistance": "Business",
+  "practicality": "Business",
+
+  // --- Communication ---
+  "communication": "Communication",
+  "language and communication": "Communication",
+  "language and vocabulary": "Communication",
+  "argument and language": "Communication",
+  "seeking information and clarification": "Communication",
+  "interrupt insert": "Communication",
+  "adding to something": "Communication",
+
+  // --- Knowledge & Science ---
+  "ideas & science": "Knowledge & Science",
+  "ideas science": "Knowledge & Science",
+  "cognition": "Knowledge & Science",
+  "knowledge and skill": "Knowledge & Science",
+  "skill or expertise": "Knowledge & Science",
+  "science research": "Knowledge & Science",
+  "science and technology": "Knowledge & Science",
+  "science": "Knowledge & Science",
+  "mathematics": "Knowledge & Science",
+  "computer science": "Knowledge & Science",
+  "psychology and education": "Knowledge & Science",
+  "psychology and human behavior": "Knowledge & Science",
+  "memory and perception": "Knowledge & Science",
+  "perception": "Knowledge & Science",
+  "the senses": "Knowledge & Science",
+  "speculation": "Knowledge & Science",
+  "planning and invention": "Knowledge & Science",
+  "planning organization": "Knowledge & Science",
+
+  // --- Art & Culture ---
+  "art": "Art & Culture",
+  "art and design": "Art & Culture",
+  "architecture and engineering": "Art & Culture",
+  "creativity": "Art & Culture",
+  "film": "Art & Culture",
+  "literature": "Art & Culture",
+  "literary analysis": "Art & Culture",
+  "fashion": "Art & Culture",
+
+  // --- Action & Events ---
+  "action": "Action & Events",
+  "action event": "Action & Events",
+  "actions and events": "Action & Events",
+  "verbs": "Action & Events",
+  "disturbance": "Action & Events",
+  "disaster and emergency": "Action & Events",
+  "conflict & history": "Action & Events",
+  "war and peace": "Action & Events",
+  "to go past or around something": "Action & Events",
+  "to attract and hold interest and attention": "Action & Events",
+  "to see or observe something": "Action & Events",
+  "secrecy": "Action & Events",
+  "security investigation": "Action & Events",
+  "separation": "Action & Events",
+
+  // --- Time & Place ---
+  "time sequence": "Time & Place",
+  "time": "Time & Place",
+  "direction opinion approach": "Time & Place",
+  "direction": "Time & Place",
+  "travel": "Time & Place",
+  "geography and environment": "Time & Place",
+  "weather and environment": "Time & Place",
+
+  // --- Beauty ---
+  "beauty": "Beauty",
+  "appearance vs reality": "Beauty",
+
+  // --- Evaluation ---
+  "evaluation": "Evaluation",
+  "praise and criticism": "Evaluation",
+  "approval": "Evaluation",
+  "challenge": "Evaluation",
+  "importance relevance": "Evaluation",
+  "interest curiosity": "Evaluation",
+  "lack of significance influence": "Evaluation",
+  "quantity importance": "Evaluation",
+  "size amount location": "Evaluation",
+  "occurring found or done often prevalent": "Evaluation",
+  "fundamentally different or distinct in nature kind or quality": "Evaluation",
+  "combining well together and enhancing each other's qualities": "Evaluation",
+  "combining well together and enhancing each others qualities": "Evaluation",
+  "the quality of being rough or harsh": "Evaluation",
+  "ease": "Evaluation",
+  "effect advantage": "Evaluation",
+  "not familiar or recognized not known or identified": "Evaluation",
+  "careful watch for possible danger or difficulties": "Evaluation",
+
+  // --- State & Well-being ---
+  "state well-being": "State & Well-being",
+  "state well being": "State & Well-being",
+  "personal growth development": "State & Well-being",
+  "progress": "State & Well-being",
+  "truth": "State & Well-being",
+  "abstract": "State & Well-being",
+  "adverbs": "State & Well-being",
+  "em": "State & Well-being",
 };
 
-const mistakes = {
-  "the show aired": "Use 'aired' (past tense) — same form as the present.",
-  "call out": "'Call out' (verb, two words) ≠ 'callout' (noun, an alert).",
-  "grip": "'Grip' (firm hold) ≠ 'gripe' (a complaint).",
-  "ash": "Hair-color sense — not the same as 'ashy' (describing dry skin).",
-  "inflated": "'Inflated' (exaggerated) ≠ 'inflamed' (red and swollen).",
-  "spouse": "Pronounced /spaʊs/ — like 'house', not 'spowze'.",
-  "feels off-putting": "Hyphenated: 'off-putting', not 'offputting' or 'off putting'.",
-  "the outlet": "Here = a media publication, NOT an electrical socket.",
-  "ditzy": "Sometimes spelled 'ditsy' — both accepted.",
-  "highlighting": "In hair: streaks of lighter color — not just 'emphasizing'.",
-  "psyop": "Short for 'psychological operation'. Pronounced /ˈsaɪɒp/.",
-  "connotation": "'Connotation' (implied meaning) ≠ 'denotation' (literal meaning).",
-  "cite": "'Cite' ≠ 'site' (place) ≠ 'sight' (vision). All sound the same.",
-  "endured": "'Endured' (lasted) ≠ 'ensured' (made certain).",
-  "chicness": "Spelled 'chicness'; pronounced /ˈʃiːknəs/.",
-  "blondness": "British: 'blonde' (♀), 'blond' (♂). American: 'blond' for both.",
-  "heralded": "'Heralded' (announced) ≠ 'herded' (drove animals).",
-  "outbreak": "'Outbreak' (sudden start, e.g. of war) ≠ 'outburst' (sudden show of emotion).",
-  "conscription": "'Conscription' (military draft) ≠ 'conscientious' (careful, thorough).",
-  "forbidding": "'Forbidding' (intimidating) ≠ 'foreboding' (sense of coming evil).",
-  "dormant": "'Dormant' (inactive but alive) ≠ 'extinct' (gone forever).",
-  "marvellous": "British 'marvellous' = American 'marvelous' (one L).",
-  "haute couture": "Pronounced /ˌəʊt kuːˈtjʊə/ — silent 'h'.",
-  "defiance": "'Defiance' (resistance) ≠ 'deviance' (departure from a norm).",
-  "segued into": "Pronounced /ˈseɡweɪd/. Often misspelled 'segwayed'.",
-  "staple": "'Staple' (essential item) ≠ 'stapler' (the tool).",
-  "bodice": "'Bodice' (top of a dress) ≠ 'bodies' (plural of body).",
-  "demeanour": "British 'demeanour' = American 'demeanor'.",
-  "advent": "'Advent' (arrival) ≠ 'advert' (an advertisement).",
-  "ginger": "Can mean the spice OR red hair (UK slang for redhead).",
-  "hippies": "Plural of 'hippie' (the person). 'Hippy' as adjective = having wide hips.",
-  "buckled": "Two senses: 'buckled' (fastened) and 'buckled' (collapsed under pressure).",
-  "pantyhose": "Plural-form noun: 'a pair of pantyhose', not 'a pantyhose'.",
-  "sprang up": "Past tense is 'sprang' (preferred) or 'sprung' (also accepted).",
-  "periphery": "'Periphery' (noun: the edge) ≠ 'peripheral' (adjective).",
-  "exacerbated": "'Exacerbated' (made worse) ≠ 'exasperated' (extremely annoyed). Very common mix-up.",
-  "post-war regeneration": "Note the hyphen: 'post-war', not 'postwar' (in British English).",
-  "stature": "'Stature' (status/height) ≠ 'statue' (sculpture) ≠ 'statute' (law).",
-  "taupe": "Pronounced /təʊp/ — like 'tope', not 'tow-pay'.",
-  "beige": "Pronounced /beɪʒ/ — like 'baizh', not 'beig'.",
-  "flattering": "'Flattering' (looks good) ≠ 'flattening' (making flat).",
-  "voluptuous": "Spelling: vo-lup-tu-ous. A common typo is 'voluptous'.",
-  "bricolage": "French origin. Pronounced /ˌbrɪkəˈlɑːʒ/, not 'brick-o-lage'.",
-  "behemoths": "Pronounced /bɪˈhiːməθs/. Note the silent 'h' is optional.",
-  "break down": "'Break down' (verb, two words) ≠ 'breakdown' (noun, one word).",
-  "mind-bending": "Hyphenated when used as an adjective: 'mind-bending ideas'.",
-  "came across": "Two senses: 'came across X' = found by chance, OR = gave a certain impression.",
-};
-
-const dict = JSON.parse(fs.readFileSync(FILE, "utf8"));
-
-let added = 0, kept = 0, missing = [];
-for (const entry of dict) {
-  const key = entry.word;
-  const t = themes[key];
-  if (!t) missing.push(key);
-
-  if (force || entry.theme === undefined) {
-    entry.theme = t || "Abstract";
-    added++;
-  } else {
-    kept++;
-  }
-  if (force || entry.common_mistake === undefined) {
-    entry.common_mistake = mistakes[key] || "";
-  }
+function normalizeKey(t) {
+  return (t || "")
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[\/]/g, " ")
+    .replace(/[,;]/g, " ")
+    .replace(/\s+/g, " ");
 }
 
-fs.writeFileSync(FILE, JSON.stringify(dict, null, 2) + "\n");
+function consolidateTheme(raw) {
+  if (!raw) return { macro: "Other", reason: "missing" };
+  const key = normalizeKey(raw);
+  if (THEME_MAP[key]) return { macro: THEME_MAP[key], reason: "mapped" };
+  // Fallback: comma-separated compound theme like "Action, Separation".
+  // Try each part; first hit wins.
+  if (/[,;]/.test(raw)) {
+    for (const part of raw.split(/[,;]/)) {
+      const k = normalizeKey(part);
+      if (k && THEME_MAP[k]) return { macro: THEME_MAP[k], reason: "mapped-split" };
+    }
+  }
+  return { macro: "Other", reason: "unmapped" };
+}
 
-console.log(`Updated ${added} entries (kept ${kept} existing).`);
-if (missing.length) {
-  console.log(`No theme mapping for ${missing.length} entr${missing.length === 1 ? "y" : "ies"} — defaulted to "Abstract":`);
-  missing.forEach((w) => console.log("  -", w));
+// ---------- Auto-mark example ----------
+function escapeRegex(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function tryAutoMark(example, headword) {
+  if (!example) return example;
+  if (/<mark>/i.test(example)) return example; // already marked
+  if (!headword) return example;
+
+  // Try whole-word case-insensitive match of the headword as written
+  const re = new RegExp(`\\b(${escapeRegex(headword)})\\b`, "i");
+  if (re.test(example)) {
+    return example.replace(re, "<mark>$1</mark>");
+  }
+
+  // Fall back: for multi-word phrases, look for stem (drop trailing s/ed/ing)
+  const stem = headword.replace(/(ies|es|s|ed|ing)$/i, "");
+  if (stem && stem.length >= 4 && stem !== headword) {
+    const re2 = new RegExp(`\\b(${escapeRegex(stem)}\\w*)\\b`, "i");
+    if (re2.test(example)) {
+      return example.replace(re2, "<mark>$1</mark>");
+    }
+  }
+  return example; // give up
+}
+
+// ---------- Run ----------
+if (!fs.existsSync(SRC)) {
+  console.error(`Source not found: ${SRC}`);
+  process.exit(1);
+}
+const raw = JSON.parse(fs.readFileSync(SRC, "utf8"));
+if (!Array.isArray(raw)) {
+  console.error("Source dictionary is not an array");
+  process.exit(1);
+}
+
+const macroCount = {};
+const unmappedThemes = new Map(); // raw theme -> count
+let withMistake = 0;
+let exampleMarked = 0;
+let exampleAutoMarked = 0;
+let exampleStillUnmarked = 0;
+
+const out = raw.map((entry) => {
+  const e = { ...entry };
+
+  // Theme
+  const result = consolidateTheme(e.theme);
+  if (result.reason === "unmapped") {
+    const k = (e.theme || "(empty)").toString();
+    unmappedThemes.set(k, (unmappedThemes.get(k) || 0) + 1);
+  }
+  e.theme = result.macro;
+  macroCount[e.theme] = (macroCount[e.theme] || 0) + 1;
+
+  // Common mistake (just normalize to string)
+  if (typeof e.common_mistake !== "string") e.common_mistake = "";
+  if (e.common_mistake.trim()) withMistake++;
+
+  // Example: ensure <mark> is present where possible
+  const before = e.example || "";
+  const had = /<mark>/i.test(before);
+  e.example = tryAutoMark(before, e.word);
+  const has = /<mark>/i.test(e.example);
+  if (had) exampleMarked++;
+  else if (has) exampleAutoMarked++;
+  else if (e.example) exampleStillUnmarked++;
+
+  return e;
+});
+
+if (!dryRun) {
+  fs.writeFileSync(OUT, JSON.stringify(out, null, 2) + "\n");
+}
+
+// ---------- Report ----------
+console.log(`\nWrote ${out.length} entries → ${path.basename(OUT)}${dryRun ? " (DRY RUN)" : ""}\n`);
+
+console.log("Macro themes:");
+Object.keys(macroCount)
+  .sort((a, b) => macroCount[b] - macroCount[a])
+  .forEach((k) => console.log(`  ${k.padEnd(25)} ${macroCount[k]}`));
+
+console.log(`\nExamples with <mark>: ${exampleMarked} pre-existing + ${exampleAutoMarked} auto-wrapped = ${exampleMarked + exampleAutoMarked} / ${out.length}`);
+console.log(`Examples still without <mark>: ${exampleStillUnmarked}`);
+console.log(`Entries with common_mistake: ${withMistake} / ${out.length}`);
+
+if (unmappedThemes.size) {
+  const sorted = [...unmappedThemes.entries()].sort((a, b) => b[1] - a[1]);
+  const totalUnmapped = sorted.reduce((s, [, n]) => s + n, 0);
+  console.log(`\nUnmapped raw themes (${totalUnmapped} entries → "Other"):`);
+  sorted.slice(0, 30).forEach(([k, n]) => console.log(`  ${String(n).padStart(3)}  ${k}`));
+  if (sorted.length > 30) console.log(`  ...and ${sorted.length - 30} more`);
 }
