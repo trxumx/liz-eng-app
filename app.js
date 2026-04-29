@@ -243,6 +243,16 @@
     return "sentiment-neutral";
   }
 
+  function setSection(sectionEl, contentEl, value) {
+    // Generic helper to hide a back-section if its value is empty.
+    if (!sectionEl) return;
+    if (value && String(value).trim().length > 0) {
+      sectionEl.classList.remove("hidden");
+    } else {
+      sectionEl.classList.add("hidden");
+    }
+  }
+
   function renderStudy() {
     const deck = activeWords();
     if (!deck.length) {
@@ -260,9 +270,18 @@
     cardSentiment.className = "sentiment-pill " + sentimentClass(w.sentiment);
     const mc = w.meanings_count;
     cardMeanings.textContent = mc ? `${mc} meaning${mc === 1 ? "" : "s"}` : "";
-    cardTranslations.textContent = (w.translations || []).join(", ");
-    cardSynonyms.textContent = (w.synonyms || []).join(", ");
+
+    const translationsText = (w.translations || []).filter(Boolean).join(", ");
+    const synonymsText = (w.synonyms || []).filter(Boolean).join(", ");
+
+    cardTranslations.textContent = translationsText;
+    cardSynonyms.textContent = synonymsText;
     cardExample.innerHTML = w.example || "";
+
+    // Hide empty back-sections so the card doesn't show bare labels.
+    setSection(cardTranslations.closest(".back-section"), cardTranslations, translationsText);
+    setSection(cardSynonyms.closest(".back-section"), cardSynonyms, synonymsText);
+    setSection(cardExample.closest(".back-section"), cardExample, w.example);
 
     // Common mistake block
     if (w.common_mistake && w.common_mistake.trim().length > 0) {
@@ -382,8 +401,23 @@
     return a;
   }
 
+  // Whether a word can serve as a question (or distractor) in the chosen mode.
+  function isQuizable(w, mode) {
+    if (!w) return false;
+    const hasTrans = Array.isArray(w.translations) && w.translations[0] && w.translations[0].trim().length > 0;
+    const hasWord = w.word && w.word.trim().length > 0;
+    if (mode === "en-ru" || mode === "ru-en" || mode === "type") {
+      return hasTrans && hasWord;
+    }
+    return hasWord;
+  }
+
+  function quizableCount(mode) {
+    return activeWords().filter((w) => isQuizable(w, mode)).length;
+  }
+
   function buildQuestions(mode, len, pool) {
-    let candidates = activeWords().slice();
+    let candidates = activeWords().filter((w) => isQuizable(w, mode));
     if (pool === "weak") {
       candidates.sort((a, b) => {
         const sa = statsFor(a.word);
@@ -404,29 +438,31 @@
       // ru-en: prompt = RU, answer = English (multiple choice)
       // type:  prompt = RU, answer = English (typed)
       const isEnRu = mode === "en-ru";
-      const promptText = isEnRu ? w.word : (w.translations[0] || w.word);
-      const answerText = isEnRu ? (w.translations[0] || "—") : w.word;
+      const promptText = isEnRu ? w.word : w.translations[0];
+      const answerText = isEnRu ? w.translations[0] : w.word;
 
       let options = null;
       if (mode !== "type") {
-        // Prefer distractors from the same deck for thematic coherence;
-        // fall back to the full dictionary if the deck is too small.
-        const inDeck = activeWords().filter((x) => x.word !== w.word);
-        const outOfDeck = words.filter((x) => x.word !== w.word && !inDeck.includes(x));
-        const pool = shuffle(inDeck).concat(shuffle(outOfDeck));
-        const distractors = pool.slice(0, 12).map((x) => {
-          return isEnRu ? (x.translations[0] || x.word) : x.word;
-        });
+        // Distractors: only from words that also pass isQuizable for this mode,
+        // so we don't mix English fallbacks into a Russian options list.
+        const distractorPool = words.filter(
+          (x) => x.word !== w.word && isQuizable(x, mode)
+        );
+        // Prefer same-theme distractors; fall back to the rest.
+        const sameTheme = distractorPool.filter((x) => x.theme === w.theme);
+        const otherTheme = distractorPool.filter((x) => x.theme !== w.theme);
+        const ordered = shuffle(sameTheme).concat(shuffle(otherTheme));
         const seen = new Set([answerText]);
         const uniqueDistractors = [];
-        for (const d of distractors) {
-          if (!seen.has(d)) {
-            seen.add(d);
-            uniqueDistractors.push(d);
-            if (uniqueDistractors.length === 3) break;
-          }
+        for (const x of ordered) {
+          const d = isEnRu ? x.translations[0] : x.word;
+          if (!d || seen.has(d)) continue;
+          seen.add(d);
+          uniqueDistractors.push(d);
+          if (uniqueDistractors.length === 3) break;
         }
-        while (uniqueDistractors.length < 3) uniqueDistractors.push("—");
+        // If the entire dictionary doesn't have enough valid distractors,
+        // we just show fewer options. (Should be rare.)
         options = shuffle([answerText, ...uniqueDistractors]);
       }
 

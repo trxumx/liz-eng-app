@@ -13,7 +13,18 @@ const path = require("path");
 
 const SRC = path.join(__dirname, "dict", "dictionary.json");
 const OUT = path.join(__dirname, "dictionary.json");
+const BACKFILL = path.join(__dirname, "backfill_data.json");
 const dryRun = process.argv.includes("--dry");
+
+// Optional: model-generated fill-ins. Loaded if present.
+let backfill = {};
+if (fs.existsSync(BACKFILL)) {
+  try {
+    backfill = JSON.parse(fs.readFileSync(BACKFILL, "utf8"));
+  } catch (e) {
+    console.warn(`Warning: ${path.basename(BACKFILL)} exists but is invalid JSON: ${e.message}`);
+  }
+}
 
 // ---------- Theme consolidation ----------
 // Lowercase keys, normalized whitespace and slash. Anything not here -> "Other".
@@ -233,6 +244,40 @@ function tryAutoMark(example, headword) {
   return example; // give up
 }
 
+// ---------- String normalization ----------
+function lcFirst(s) {
+  if (!s || typeof s !== "string") return s;
+  return s[0].toLowerCase() + s.slice(1);
+}
+
+function cleanString(s) {
+  if (typeof s !== "string") return "";
+  return s.replace(/\s+/g, " ").trim();
+}
+
+// Strip a known theme name glued to the end of an example without
+// proper sentence punctuation. Conservative: only strips if the
+// remaining text is itself unpunctuated (i.e. clearly fragment + theme).
+const APPENDED_THEME_NAMES = [
+  "war and peace", "law and order", "praise and criticism",
+  "the senses", "size, amount, location", "size amount location",
+  "politics and tradition", "knowledge and skill", "argument and language",
+];
+function stripGluedTheme(example) {
+  if (!example) return example;
+  const trimmed = example.trim();
+  // If example ends with sentence punctuation, leave it alone
+  if (/[.!?…]\s*$/.test(trimmed)) return example;
+  for (const t of APPENDED_THEME_NAMES) {
+    const re = new RegExp(`\\s+${escapeRegex(t)}\\s*$`, "i");
+    if (re.test(trimmed)) {
+      const stripped = trimmed.replace(re, "").trim();
+      if (stripped.length >= 3) return stripped;
+    }
+  }
+  return example;
+}
+
 // ---------- Run ----------
 if (!fs.existsSync(SRC)) {
   console.error(`Source not found: ${SRC}`);
@@ -251,8 +296,65 @@ let exampleMarked = 0;
 let exampleAutoMarked = 0;
 let exampleStillUnmarked = 0;
 
+let stripped = 0;
+let backfilledTrans = 0, backfilledSyn = 0, backfilledEx = 0;
+
 const out = raw.map((entry) => {
   const e = { ...entry };
+
+  // Word: lowercase, trim
+  e.word = cleanString((e.word || "").toLowerCase());
+
+  // Transcription
+  e.transcription = cleanString(e.transcription || "");
+
+  // Sentiment: keep as-is, default to Neutral
+  if (!["Positive", "Negative", "Neutral"].includes(e.sentiment)) {
+    e.sentiment = "Neutral";
+  }
+
+  // Translations: array of cleaned strings, drop empties, lowercase first letter
+  e.translations = Array.isArray(e.translations)
+    ? e.translations.map((t) => cleanString(lcFirst(t))).filter(Boolean)
+    : [];
+
+  // Synonyms: same treatment
+  e.synonyms = Array.isArray(e.synonyms)
+    ? e.synonyms.map((s) => cleanString(lcFirst(s))).filter(Boolean)
+    : [];
+
+  // Backfill from model-generated data (only fills gaps, never overrides)
+  const fill = backfill[e.word];
+  if (fill) {
+    if (e.translations.length === 0 && Array.isArray(fill.translations) && fill.translations.length) {
+      e.translations = fill.translations.map((t) => cleanString(lcFirst(t))).filter(Boolean);
+      backfilledTrans++;
+    }
+    if (e.synonyms.length === 0 && Array.isArray(fill.synonyms) && fill.synonyms.length) {
+      e.synonyms = fill.synonyms.map((s) => cleanString(lcFirst(s))).filter(Boolean);
+      backfilledSyn++;
+    }
+    if ((!e.example || !e.example.trim()) && typeof fill.example === "string" && fill.example.trim()) {
+      e.example = cleanString(fill.example);
+      backfilledEx++;
+    }
+  }
+
+  // meanings_count: prefer recorded, else use translations.length
+  e.meanings_count = typeof e.meanings_count === "number" && e.meanings_count > 0
+    ? e.meanings_count
+    : (e.translations.length || 1);
+
+  // Example: strip glued theme, then ensure <mark>
+  const exBefore = e.example || "";
+  const exStripped = stripGluedTheme(exBefore);
+  if (exStripped !== exBefore) stripped++;
+  const had = /<mark>/i.test(exStripped);
+  e.example = tryAutoMark(exStripped, e.word);
+  const has = /<mark>/i.test(e.example);
+  if (had) exampleMarked++;
+  else if (has) exampleAutoMarked++;
+  else if (e.example) exampleStillUnmarked++;
 
   // Theme
   const result = consolidateTheme(e.theme);
@@ -265,35 +367,51 @@ const out = raw.map((entry) => {
 
   // Common mistake (just normalize to string)
   if (typeof e.common_mistake !== "string") e.common_mistake = "";
-  if (e.common_mistake.trim()) withMistake++;
-
-  // Example: ensure <mark> is present where possible
-  const before = e.example || "";
-  const had = /<mark>/i.test(before);
-  e.example = tryAutoMark(before, e.word);
-  const has = /<mark>/i.test(e.example);
-  if (had) exampleMarked++;
-  else if (has) exampleAutoMarked++;
-  else if (e.example) exampleStillUnmarked++;
+  e.common_mistake = e.common_mistake.replace(/\s+/g, " ").trim();
+  if (e.common_mistake) withMistake++;
 
   return e;
 });
 
+// De-duplicate by word: keep the entry with the most filled fields
+const byWord = new Map();
+for (const e of out) {
+  const score = (e.translations.length ? 4 : 0) + (e.synonyms.length ? 2 : 0) + (e.example ? 1 : 0) + (e.common_mistake ? 1 : 0);
+  const prev = byWord.get(e.word);
+  if (!prev || score > prev.score) byWord.set(e.word, { entry: e, score });
+}
+const deduped = [...byWord.values()].map((x) => x.entry);
+const removed = out.length - deduped.length;
+
 if (!dryRun) {
-  fs.writeFileSync(OUT, JSON.stringify(out, null, 2) + "\n");
+  fs.writeFileSync(OUT, JSON.stringify(deduped, null, 2) + "\n");
 }
 
 // ---------- Report ----------
-console.log(`\nWrote ${out.length} entries → ${path.basename(OUT)}${dryRun ? " (DRY RUN)" : ""}\n`);
+console.log(`\nWrote ${deduped.length} entries → ${path.basename(OUT)}${dryRun ? " (DRY RUN)" : ""}\n`);
 
-console.log("Macro themes:");
+const withTrans = deduped.filter((e) => e.translations.length > 0).length;
+const withSyn = deduped.filter((e) => e.synonyms.length > 0).length;
+const withEx = deduped.filter((e) => e.example).length;
+
+console.log("Coverage:");
+console.log(`  with translations: ${withTrans} / ${deduped.length}  (${Math.round(100*withTrans/deduped.length)}%)`);
+console.log(`  with synonyms:     ${withSyn} / ${deduped.length}  (${Math.round(100*withSyn/deduped.length)}%)`);
+console.log(`  with example:      ${withEx} / ${deduped.length}  (${Math.round(100*withEx/deduped.length)}%)`);
+console.log(`  with mistake note: ${withMistake} / ${deduped.length}`);
+console.log(`  examples cleaned (theme suffix stripped): ${stripped}`);
+console.log(`  duplicates removed: ${removed}`);
+if (Object.keys(backfill).length) {
+  console.log(`  backfill applied: +${backfilledTrans} translations, +${backfilledSyn} synonyms, +${backfilledEx} examples`);
+}
+
+console.log("\nMacro themes:");
 Object.keys(macroCount)
   .sort((a, b) => macroCount[b] - macroCount[a])
   .forEach((k) => console.log(`  ${k.padEnd(25)} ${macroCount[k]}`));
 
-console.log(`\nExamples with <mark>: ${exampleMarked} pre-existing + ${exampleAutoMarked} auto-wrapped = ${exampleMarked + exampleAutoMarked} / ${out.length}`);
+console.log(`\nExamples with <mark>: ${exampleMarked} pre-existing + ${exampleAutoMarked} auto-wrapped`);
 console.log(`Examples still without <mark>: ${exampleStillUnmarked}`);
-console.log(`Entries with common_mistake: ${withMistake} / ${out.length}`);
 
 if (unmappedThemes.size) {
   const sorted = [...unmappedThemes.entries()].sort((a, b) => b[1] - a[1]);
