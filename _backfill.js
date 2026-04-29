@@ -57,6 +57,28 @@ function needs(entry) {
   };
 }
 
+const SYSTEM_PROMPT = `You are an English-Russian lexicographer filling in a vocabulary deck for a Russian-speaking student.
+
+You output ONLY a single JSON object — never any prose, never markdown, never code fences.
+
+Rules:
+- "translations" — Russian translations only. Use Cyrillic letters. Never the English word, never a transliteration. Use plain dictionary words, not phrases. 1-3 entries.
+- "synonyms"    — English near-synonyms, all lowercase. 2-3 entries.
+- "example"     — one short sentence written in ENGLISH (no Russian, no Cyrillic letters), 6-15 words, natural-sounding. The headword must appear in the sentence exactly once, surrounded by <mark>…</mark>. Match its part of speech.
+- Lowercase first letter unless it is a proper noun.
+- No commentary, no extra fields.
+
+Examples of good output:
+
+For headword "abundant":
+{"translations":["обильный","изобильный","богатый"],"synonyms":["plentiful","ample","copious"],"example":"The orchard was <mark>abundant</mark> with ripe apples."}
+
+For headword "rejuvenated":
+{"translations":["омолодившийся","посвежевший"],"synonyms":["refreshed","revitalized","renewed"],"example":"After the holiday she felt completely <mark>rejuvenated</mark>."}
+
+For headword "came across":
+{"translations":["наткнуться","случайно встретить"],"synonyms":["encountered","stumbled upon","found"],"example":"I <mark>came across</mark> an old photograph in the attic."}`;
+
 function buildPrompt(entry) {
   const n = needs(entry);
   const have = [];
@@ -66,27 +88,15 @@ function buildPrompt(entry) {
   if (entry.translations?.[0]) have.push(`Existing translations: ${entry.translations.join(", ")}`);
 
   const want = [];
-  if (n.needT) want.push('  "translations": [<1-3 Russian translations of the headword, lowercase first letter, no English fallback>]');
-  if (n.needS) want.push('  "synonyms":     [<2-3 English synonyms or near-synonyms, lowercase>]');
-  if (n.needE || n.noMark) want.push('  "example":      "<one short, natural English sentence using the headword, with <mark>headword</mark> wrapped around the actual word as it appears>"');
+  if (n.needT) want.push('"translations"');
+  if (n.needS) want.push('"synonyms"');
+  if (n.needE || n.noMark) want.push('"example"');
 
-  return `You are an English-Russian lexicographer filling in a vocabulary dictionary for a Russian-speaking student.
-
-HEADWORD: "${entry.word}"
+  return `HEADWORD: "${entry.word}"
 ${have.join("\n")}
 
-Output ONLY a single JSON object (no prose, no markdown fences) with these fields:
-{
-${want.join(",\n")}
-}
-
-Rules:
-- Translations are Russian, NOT transliteration, NOT the English word.
-- If the headword is a phrase (e.g. "came across"), translate the phrase as a whole.
-- Synonyms must be valid English words/phrases.
-- Example must be 6-15 words, natural-sounding, and contain the headword exactly with <mark>…</mark> around it.
-- Lowercase the first letter of each translation/synonym unless it is a proper noun.
-- No commentary, no extra fields.`;
+Produce a JSON object with these fields: ${want.join(", ")}.
+You may also include the other fields if you have a clearly better suggestion than what already exists.`;
 }
 
 function extractJSON(text) {
@@ -115,7 +125,7 @@ async function callLlama(prompt) {
         format: "json",                 // Ollama JSON mode
         options: { temperature: TEMPERATURE },
         messages: [
-          { role: "system", content: "You produce only strict JSON. No prose." },
+          { role: "system", content: SYSTEM_PROMPT },
           { role: "user",   content: prompt },
         ],
       }),
@@ -157,12 +167,24 @@ function validate(filled, headword) {
 
   if (typeof filled.example === "string" && filled.example.trim()) {
     let ex = filled.example.trim();
-    // Ensure <mark> wraps the headword
-    if (!/<mark>/i.test(ex)) {
-      const re = new RegExp(`\\b(${headword.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")})\\b`, "i");
-      if (re.test(ex)) ex = ex.replace(re, "<mark>$1</mark>");
+
+    // Reject any Russian-language example outright. The deck is for
+    // a Russian speaker learning English — examples must be English.
+    if (isCyrillic(ex)) {
+      // skip
+    } else {
+      // Ensure <mark> wraps the headword (try whole-word match first)
+      if (!/<mark>/i.test(ex)) {
+        const re = new RegExp(`\\b(${headword.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")})\\b`, "i");
+        if (re.test(ex)) ex = ex.replace(re, "<mark>$1</mark>");
+      }
+      // The <mark>…</mark> contents must themselves not be Russian
+      // (catches transliterations like <mark>амелиорировать</mark>).
+      const markMatch = ex.match(/<mark>([^<]*)<\/mark>/i);
+      if (markMatch && !isCyrillic(markMatch[1])) {
+        out.example = ex;
+      }
     }
-    if (/<mark>/i.test(ex)) out.example = ex;
   }
 
   return Object.keys(out).length ? out : null;
@@ -176,6 +198,28 @@ async function main() {
     process.exit(1);
   }
   const backfill = loadJSON(BACKFILL_PATH, {});
+
+  // Re-validate existing entries against the current rules. If anything
+  // becomes invalid (e.g. Russian-language example slipped in earlier),
+  // drop just the bad fields so they get regenerated on this run.
+  let scrubbed = 0;
+  for (const word of Object.keys(backfill)) {
+    const cleaned = validate(backfill[word], word);
+    if (!cleaned) {
+      delete backfill[word];
+      scrubbed++;
+    } else {
+      // Track field-level drops too
+      const before = Object.keys(backfill[word] || {}).length;
+      const after = Object.keys(cleaned).length;
+      if (after < before) scrubbed++;
+      backfill[word] = cleaned;
+    }
+  }
+  if (scrubbed) {
+    saveJSON(BACKFILL_PATH, backfill);
+    console.log(`Scrubbed ${scrubbed} stale/invalid entr${scrubbed === 1 ? "y" : "ies"} from ${path.basename(BACKFILL_PATH)} — they will be retried.`);
+  }
 
   // Health check the endpoint
   try {
