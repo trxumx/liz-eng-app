@@ -61,22 +61,32 @@ const SYSTEM_PROMPT = `You are an English-Russian lexicographer filling in a voc
 
 You output ONLY a single JSON object — never any prose, never markdown, never code fences.
 
+CRITICAL — translations must be SEMANTICALLY ACCURATE:
+- The English synonyms provided in the user message are the ground truth for the headword's meaning.
+  Your Russian translations must be direct dictionary equivalents of those synonyms.
+- If you are not confident about an exact translation, stick to the safest, most common one and provide fewer entries (one is fine).
+- DO NOT invent translations that share spelling or sound but not meaning.
+  Example: "amorphous" is NEVER "бесполый" (that is "asexual").
+  Example: "ameliorate" means "to improve", NEVER "to fix" (исправить implies repairing a defect).
+
 Rules:
-- "translations" — Russian translations only. Use Cyrillic letters. Never the English word, never a transliteration. Use plain dictionary words, not phrases. 1-3 entries.
-- "synonyms"    — English near-synonyms, all lowercase. 2-3 entries.
-- "example"     — one short sentence written in ENGLISH (no Russian, no Cyrillic letters), 6-15 words, natural-sounding. The headword must appear in the sentence exactly once, surrounded by <mark>…</mark>. Match its part of speech.
-- Lowercase first letter unless it is a proper noun.
+- "translations" — 1-3 Russian translations, Cyrillic only, no transliteration, no English fallback, lowercase first letter, matching the headword's part of speech.
+- "synonyms"    — 2-3 English near-synonyms, all lowercase.
+- "example"     — one short sentence written in ENGLISH (no Cyrillic letters), 6-15 words, natural. The headword must appear exactly once, surrounded by <mark>…</mark>, in the same form (or a close inflection of) the headword.
 - No commentary, no extra fields.
 
 Examples of good output:
 
-For headword "abundant":
+Headword "abundant" (synonyms: plentiful, ample, copious):
 {"translations":["обильный","изобильный","богатый"],"synonyms":["plentiful","ample","copious"],"example":"The orchard was <mark>abundant</mark> with ripe apples."}
 
-For headword "rejuvenated":
+Headword "amorphous" (synonyms: shapeless, formless, indeterminate):
+{"translations":["бесформенный","аморфный","расплывчатый"],"synonyms":["shapeless","formless","vague"],"example":"The clay started as an <mark>amorphous</mark> blob in his hands."}
+
+Headword "rejuvenated" (synonyms: refreshed, revitalized, renewed):
 {"translations":["омолодившийся","посвежевший"],"synonyms":["refreshed","revitalized","renewed"],"example":"After the holiday she felt completely <mark>rejuvenated</mark>."}
 
-For headword "came across":
+Headword "came across" (synonyms: encountered, stumbled upon, found):
 {"translations":["наткнуться","случайно встретить"],"synonyms":["encountered","stumbled upon","found"],"example":"I <mark>came across</mark> an old photograph in the attic."}`;
 
 function buildPrompt(entry) {
