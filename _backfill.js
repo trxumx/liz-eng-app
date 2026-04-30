@@ -27,12 +27,21 @@ const BACKFILL_PATH = path.join(__dirname, "backfill_data.json");
 
 const args = process.argv.slice(2);
 const force = args.includes("--force");
+const fullRegen = args.includes("--full");
 const limitArg = args.find((a) => a.startsWith("--limit="));
 const onlyArg = args.find((a) => a.startsWith("--only="));
 const limit = limitArg ? parseInt(limitArg.split("=")[1], 10) : Infinity;
 const onlyWords = onlyArg
   ? new Set(onlyArg.split("=")[1].split(",").map((s) => s.trim().toLowerCase()))
   : null;
+
+const ALLOWED_THEMES = [
+  "Emotions", "Personality", "Relationships", "Society",
+  "Business", "Communication", "Knowledge & Science", "Art & Culture",
+  "Action & Events", "Time & Place", "Beauty", "Evaluation",
+  "State & Well-being", "Other",
+];
+const ALLOWED_SENTIMENTS = ["Positive", "Negative", "Neutral"];
 
 // ---------- Helpers ----------
 function loadJSON(p, fallback) {
@@ -57,7 +66,7 @@ function needs(entry) {
   };
 }
 
-const SYSTEM_PROMPT = `You are an English-Russian lexicographer filling in a vocabulary deck for a Russian-speaking student.
+const PARTIAL_SYSTEM_PROMPT = `You are an English-Russian lexicographer filling in a vocabulary deck for a Russian-speaking student.
 
 You output ONLY a single JSON object — never any prose, never markdown, never code fences.
 
@@ -89,7 +98,54 @@ Headword "rejuvenated" (synonyms: refreshed, revitalized, renewed):
 Headword "came across" (synonyms: encountered, stumbled upon, found):
 {"translations":["наткнуться","случайно встретить"],"synonyms":["encountered","stumbled upon","found"],"example":"I <mark>came across</mark> an old photograph in the attic."}`;
 
-function buildPrompt(entry) {
+const FULL_SYSTEM_PROMPT = `You are an English-Russian lexicographer producing a vocabulary deck card for a Russian-speaking student learning English.
+
+You output ONLY a single JSON object — never any prose, never markdown, never code fences.
+
+CRITICAL — translations and synonyms must be SEMANTICALLY ACCURATE:
+- Use synonyms as a meaning anchor.
+- DO NOT invent translations that share spelling/sound but not meaning.
+  "amorphous" is NEVER "бесполый" (that means "asexual").
+  "ameliorate" means "to improve" — NOT "исправить" (which is "to fix").
+
+Output exactly these fields (in this order):
+{
+  "transcription":  "/IPA in standard British or General American/",
+  "sentiment":      "Positive" | "Negative" | "Neutral",
+  "meanings_count": 1,
+  "translations":   ["1-3 Russian translations, Cyrillic only, lowercase first letter, matching the headword's part of speech"],
+  "synonyms":       ["2-3 English near-synonyms, lowercase"],
+  "example":        "<one short English sentence (6-15 words, no Cyrillic) with <mark>headword</mark> exactly wrapped around the word in its natural form>",
+  "theme":          "one of: Emotions | Personality | Relationships | Society | Business | Communication | Knowledge & Science | Art & Culture | Action & Events | Time & Place | Beauty | Evaluation | State & Well-being | Other",
+  "common_mistake": "<one short English note about a common confusion if a clear one exists, otherwise empty string \\"\\">"
+}
+
+Rules:
+- transcription must be valid IPA inside slashes: /…/
+- sentiment captures the connotation of the word in typical use
+- meanings_count is a small integer (1-3 for typical cards)
+- translations: Cyrillic only, no transliteration, no English fallback
+- synonyms: lowercase English; never the headword itself
+- example: ENGLISH only — never Cyrillic; <mark>…</mark> wraps the headword exactly once
+- theme: must be one of the 14 listed labels exactly as written. If no clear category, use "Other".
+- common_mistake: only fill if there is a clear, well-known confusion (e.g. exacerbated vs exasperated). Otherwise return "".
+- No commentary, no extra fields.
+
+Reference examples:
+
+Headword "abundant":
+{"transcription":"/əˈbʌn.dənt/","sentiment":"Positive","meanings_count":1,"translations":["обильный","изобильный","богатый"],"synonyms":["plentiful","ample","copious"],"example":"The orchard was <mark>abundant</mark> with ripe apples.","theme":"Evaluation","common_mistake":""}
+
+Headword "amorphous":
+{"transcription":"/əˈmɔː.fəs/","sentiment":"Neutral","meanings_count":1,"translations":["бесформенный","аморфный","расплывчатый"],"synonyms":["shapeless","formless","vague"],"example":"The clay started as an <mark>amorphous</mark> blob in his hands.","theme":"Personality","common_mistake":""}
+
+Headword "exacerbated":
+{"transcription":"/ɪɡˈzæs.ə.beɪ.tɪd/","sentiment":"Negative","meanings_count":1,"translations":["усугубил","обострил"],"synonyms":["worsened","aggravated","intensified"],"example":"His comments only <mark>exacerbated</mark> the situation.","theme":"Emotions","common_mistake":"'Exacerbated' (made worse) is not 'exasperated' (extremely annoyed). Very common mix-up."}
+
+Headword "came across":
+{"transcription":"/keɪm əˈkrɒs/","sentiment":"Neutral","meanings_count":2,"translations":["наткнуться","случайно встретить"],"synonyms":["encountered","stumbled upon","found"],"example":"I <mark>came across</mark> an old photograph in the attic.","theme":"Relationships","common_mistake":"Two senses: 'came across X' = found by chance, OR = gave a certain impression."}`;
+
+function buildPartialPrompt(entry) {
   const n = needs(entry);
   const have = [];
   if (entry.transcription) have.push(`IPA: ${entry.transcription}`);
@@ -107,6 +163,20 @@ ${have.join("\n")}
 
 Produce a JSON object with these fields: ${want.join(", ")}.
 You may also include the other fields if you have a clearly better suggestion than what already exists.`;
+}
+
+function buildFullPrompt(entry) {
+  // Pass any existing context as a hint (the model may use it to anchor meaning),
+  // but ask for the entire schema regardless.
+  const hints = [];
+  if (entry.synonyms?.[0])     hints.push(`Hint synonyms (may be incomplete): ${entry.synonyms.slice(0,5).join(", ")}`);
+  if (entry.translations?.[0]) hints.push(`Hint translations (may be incomplete): ${entry.translations.join(", ")}`);
+  if (entry.example)           hints.push(`Hint example (may be flawed): ${entry.example.replace(/<\/?mark>/g, "")}`);
+  if (entry.theme)             hints.push(`Hint source theme (may be too narrow): ${entry.theme}`);
+
+  return `HEADWORD: "${entry.word}"
+${hints.length ? hints.join("\n") + "\n" : ""}
+Produce the full JSON card for this headword exactly per the schema in the system message.`;
 }
 
 function extractJSON(text) {
@@ -135,7 +205,7 @@ async function callLlama(prompt) {
         format: "json",                 // Ollama JSON mode
         options: { temperature: TEMPERATURE },
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
+          { role: "system", content: fullRegen ? FULL_SYSTEM_PROMPT : PARTIAL_SYSTEM_PROMPT },
           { role: "user",   content: prompt },
         ],
       }),
@@ -183,18 +253,62 @@ function validate(filled, headword) {
     if (isCyrillic(ex)) {
       // skip
     } else {
-      // Ensure <mark> wraps the headword (try whole-word match first)
-      if (!/<mark>/i.test(ex)) {
-        const re = new RegExp(`\\b(${headword.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")})\\b`, "i");
-        if (re.test(ex)) ex = ex.replace(re, "<mark>$1</mark>");
+      const headRe = new RegExp(`\\b(${headword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})\\b`, "i");
+      const markRe = /<mark>([^<]*)<\/mark>/i;
+      const m = ex.match(markRe);
+
+      if (!m) {
+        // No mark yet — wrap the full headword if present
+        if (headRe.test(ex)) ex = ex.replace(headRe, "<mark>$1</mark>");
+      } else {
+        const marked = m[1].toLowerCase().trim();
+        const head = headword.toLowerCase().trim();
+        // For multi-word headwords, expand the mark to cover the full phrase
+        // when the model wrapped only a fragment.
+        if (marked !== head && head.includes(" ")) {
+          const stripped = ex.replace(markRe, m[1]);
+          if (headRe.test(stripped)) {
+            ex = stripped.replace(headRe, "<mark>$1</mark>");
+          }
+        }
       }
-      // The <mark>…</mark> contents must themselves not be Russian
-      // (catches transliterations like <mark>амелиорировать</mark>).
-      const markMatch = ex.match(/<mark>([^<]*)<\/mark>/i);
-      if (markMatch && !isCyrillic(markMatch[1])) {
+
+      // Final mark must exist, must not be Russian (catches transliterations
+      // like <mark>амелиорировать</mark>).
+      const finalMark = ex.match(markRe);
+      if (finalMark && !isCyrillic(finalMark[1])) {
         out.example = ex;
       }
     }
+  }
+
+  // Full-regen extras (only kept if valid)
+  if (typeof filled.transcription === "string") {
+    const ipa = filled.transcription.trim();
+    if (/^\/.+\/$/.test(ipa)) out.transcription = ipa;
+  }
+
+  if (typeof filled.sentiment === "string") {
+    const s = filled.sentiment.trim();
+    const norm = s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+    if (ALLOWED_SENTIMENTS.includes(norm)) out.sentiment = norm;
+  }
+
+  if (typeof filled.meanings_count === "number" && Number.isFinite(filled.meanings_count)) {
+    const n = Math.max(1, Math.min(5, Math.round(filled.meanings_count)));
+    out.meanings_count = n;
+  } else if (typeof filled.meanings_count === "string") {
+    const n = parseInt(filled.meanings_count, 10);
+    if (Number.isFinite(n)) out.meanings_count = Math.max(1, Math.min(5, n));
+  }
+
+  if (typeof filled.theme === "string") {
+    const t = filled.theme.trim();
+    if (ALLOWED_THEMES.includes(t)) out.theme = t;
+  }
+
+  if (typeof filled.common_mistake === "string") {
+    out.common_mistake = filled.common_mistake.replace(/\s+/g, " ").trim();
   }
 
   return Object.keys(out).length ? out : null;
@@ -250,16 +364,17 @@ async function main() {
   // Build queue
   let queue = dict.filter((e) => {
     if (onlyWords && !onlyWords.has(e.word.toLowerCase())) return false;
+    if (!force && backfill[e.word]) return false;
+    if (fullRegen) return true; // regenerate all fields for every word
     const n = needs(e);
     if (!(n.needT || n.needS || n.needE || n.noMark)) return false;
-    if (!force && backfill[e.word]) return false;
     return true;
   });
   if (!Number.isFinite(limit)) {
-    console.log(`Queue: ${queue.length} entries`);
+    console.log(`Queue: ${queue.length} entries${fullRegen ? " (full regenerate)" : ""}`);
   } else {
     queue = queue.slice(0, limit);
-    console.log(`Queue: ${queue.length} entries (capped by --limit)`);
+    console.log(`Queue: ${queue.length} entries${fullRegen ? " (full regenerate)" : ""} (capped by --limit)`);
   }
 
   let ok = 0, fail = 0, t0 = Date.now();
@@ -273,7 +388,8 @@ async function main() {
     while (attempt < 2 && !validated) {
       attempt++;
       try {
-        raw = await callLlama(buildPrompt(entry));
+        const prompt = fullRegen ? buildFullPrompt(entry) : buildPartialPrompt(entry);
+        raw = await callLlama(prompt);
         parsed = extractJSON(raw);
         validated = validate(parsed, entry.word);
       } catch (e) {

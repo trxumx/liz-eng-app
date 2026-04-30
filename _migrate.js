@@ -323,20 +323,38 @@ const out = raw.map((entry) => {
     ? e.synonyms.map((s) => cleanString(lcFirst(s))).filter(Boolean)
     : [];
 
-  // Backfill from model-generated data (only fills gaps, never overrides)
+  // Backfill from model-generated data — when a field exists in the
+  // backfill, it's treated as source-of-truth and overrides whatever was
+  // in the source dict. Fields absent from the backfill are left alone.
   const fill = backfill[e.word];
   if (fill) {
-    if (e.translations.length === 0 && Array.isArray(fill.translations) && fill.translations.length) {
+    if (Array.isArray(fill.translations) && fill.translations.length) {
       e.translations = fill.translations.map((t) => cleanString(lcFirst(t))).filter(Boolean);
       backfilledTrans++;
     }
-    if (e.synonyms.length === 0 && Array.isArray(fill.synonyms) && fill.synonyms.length) {
+    if (Array.isArray(fill.synonyms) && fill.synonyms.length) {
       e.synonyms = fill.synonyms.map((s) => cleanString(lcFirst(s))).filter(Boolean);
       backfilledSyn++;
     }
-    if ((!e.example || !e.example.trim()) && typeof fill.example === "string" && fill.example.trim()) {
+    if (typeof fill.example === "string" && fill.example.trim()) {
       e.example = cleanString(fill.example);
       backfilledEx++;
+    }
+    if (typeof fill.transcription === "string" && /^\/.+\/$/.test(fill.transcription.trim())) {
+      e.transcription = fill.transcription.trim();
+    }
+    if (["Positive","Negative","Neutral"].includes(fill.sentiment)) {
+      e.sentiment = fill.sentiment;
+    }
+    if (typeof fill.meanings_count === "number" && Number.isFinite(fill.meanings_count)) {
+      e.meanings_count = Math.max(1, Math.min(5, Math.round(fill.meanings_count)));
+    }
+    if (typeof fill.common_mistake === "string") {
+      e.common_mistake = fill.common_mistake.replace(/\s+/g, " ").trim();
+    }
+    if (typeof fill.theme === "string") {
+      // store under a private field; the canonical theme is set below.
+      e.__backfillTheme = fill.theme;
     }
   }
 
@@ -356,13 +374,24 @@ const out = raw.map((entry) => {
   else if (has) exampleAutoMarked++;
   else if (e.example) exampleStillUnmarked++;
 
-  // Theme
-  const result = consolidateTheme(e.theme);
-  if (result.reason === "unmapped") {
-    const k = (e.theme || "(empty)").toString();
-    unmappedThemes.set(k, (unmappedThemes.get(k) || 0) + 1);
+  // Theme — backfill takes precedence if it provided one of the allowed macros;
+  // otherwise we consolidate from the raw source theme.
+  const ALLOWED = new Set([
+    "Emotions","Personality","Relationships","Society","Business","Communication",
+    "Knowledge & Science","Art & Culture","Action & Events","Time & Place","Beauty",
+    "Evaluation","State & Well-being","Other",
+  ]);
+  if (e.__backfillTheme && ALLOWED.has(e.__backfillTheme)) {
+    e.theme = e.__backfillTheme;
+  } else {
+    const result = consolidateTheme(e.theme);
+    if (result.reason === "unmapped") {
+      const k = (e.theme || "(empty)").toString();
+      unmappedThemes.set(k, (unmappedThemes.get(k) || 0) + 1);
+    }
+    e.theme = result.macro;
   }
-  e.theme = result.macro;
+  delete e.__backfillTheme;
   macroCount[e.theme] = (macroCount[e.theme] || 0) + 1;
 
   // Common mistake (just normalize to string)
