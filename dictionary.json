@@ -507,7 +507,7 @@
     "sentiment": "Neutral",
     "meanings_count": 1,
     "translations": [
-      "эмblem",
+      "эмблема",
       "символ",
       "знак"
     ],
@@ -1496,9 +1496,9 @@
     "sentiment": "Positive",
     "meanings_count": 1,
     "translations": [
-      "пышный",
+      "чувственный",
       "сладострастный",
-      "сensualный"
+      "роскошный"
     ],
     "synonyms": [
       "curvaceous",
@@ -2986,8 +2986,8 @@
     "sentiment": "Negative",
     "meanings_count": 1,
     "translations": [
-      "dogматический",
-      "убежденный",
+      "догматический",
+      "категоричный",
       "непреклонный"
     ],
     "synonyms": [
@@ -3355,8 +3355,9 @@
     "sentiment": "Positive",
     "meanings_count": 1,
     "translations": [
-      "idealизировать",
-      "романтизировать"
+      "идеализировать",
+      "превозносить",
+      "возвышать"
     ],
     "synonyms": [
       "glorify",
@@ -3824,9 +3825,9 @@
     "sentiment": "Neutral",
     "meanings_count": 1,
     "translations": [
-      "пervasивный",
-      "распространенный",
-      "повсеместный"
+      "повсеместный",
+      "всепроникающий",
+      "распространённый"
     ],
     "synonyms": [
       "widespread",
@@ -3938,8 +3939,8 @@
     "meanings_count": 1,
     "translations": [
       "сдался",
-      "побросал оружие",
-      "сurrendered"
+      "капитулировал",
+      "уступил"
     ],
     "synonyms": [
       "yielded",
@@ -5112,8 +5113,9 @@
     "sentiment": "Neutral",
     "meanings_count": 1,
     "translations": [
-      "не故意插入的中文，我会移除它。intended",
-      "непреднамеренный"
+      "непреднамеренный",
+      "случайный",
+      "неумышленный"
     ],
     "synonyms": [
       "accidental",
@@ -5482,8 +5484,8 @@
     "meanings_count": 1,
     "translations": [
       "сожалеть",
-      "регret",
-      "пожалеть"
+      "жалеть",
+      "раскаиваться"
     ],
     "synonyms": [
       "sorry about",
@@ -5624,7 +5626,7 @@
     "common_mistake": ""
   },
   {
-    "word": "verisimilitude in",
+    "word": "verisimilitude",
     "transcription": "/ˌvɛr.ɪ.sɪˈmɪl.ɪ.tud ɪn/",
     "sentiment": "Neutral",
     "meanings_count": 1,
@@ -5870,9 +5872,9 @@
     "sentiment": "Negative",
     "meanings_count": 1,
     "translations": [
+      "неважный",
       "незначительный",
-      "бесполезный",
-      "неimportant"
+      "несущественный"
     ],
     "synonyms": [
       "insignificant",
@@ -8132,9 +8134,9 @@
     "sentiment": "Neutral",
     "meanings_count": 1,
     "translations": [
-      "риторик",
-      "рhetорик",
-      "рhetорик"
+      "ритор",
+      "оратор",
+      "красноречивый человек"
     ],
     "synonyms": [
       "orator",
@@ -8261,9 +8263,9 @@
     "sentiment": "Negative",
     "meanings_count": 1,
     "translations": [
-      "bombастический",
-      "пышный",
-      "надутый"
+      "напыщенный",
+      "высокопарный",
+      "хвастливый"
     ],
     "synonyms": [
       "grandiose",
@@ -9811,9 +9813,9 @@
     "sentiment": "Negative",
     "meanings_count": 1,
     "translations": [
-      "рashливый",
-      "необдуманный",
-      "безрассудный"
+      "безрассудный",
+      "опрометчивый",
+      "отчаянный"
     ],
     "synonyms": [
       "reckless",
@@ -9830,9 +9832,9 @@
     "sentiment": "Neutral",
     "meanings_count": 1,
     "translations": [
-      "величественный",
       "грандиозный",
-      "мagnificent"
+      "величественный",
+      "помпезный"
     ],
     "synonyms": [
       "magnificent",
@@ -10034,7 +10036,8 @@
     "sentiment": "Neutral",
     "meanings_count": 1,
     "translations": [
-      "prematureный",
+      "не по годам развитый",
+      "преждевременный",
       "ранний"
     ],
     "synonyms": [
@@ -10783,9 +10786,9 @@
     "sentiment": "Negative",
     "meanings_count": 1,
     "translations": [
-      "скупый",
-      "экономный до жадности",
-      "стingy"
+      "скупой",
+      "нищенский",
+      "бедный"
     ],
     "synonyms": [
       "stingy",
@@ -12118,8 +12121,8 @@
     "sentiment": "Negative",
     "meanings_count": 1,
     "translations": [
-      "выступление с критикой",
-      "диatribа",
+      "тирада",
+      "гневная речь",
       "обличительная речь"
     ],
     "synonyms": [
@@ -12936,8 +12939,9 @@
     "sentiment": "Neutral",
     "meanings_count": 1,
     "translations": [
-      "germinировать",
-      "прорастать"
+      "прорастать",
+      "давать всходы",
+      "зарождаться"
     ],
     "synonyms": [
       "sprout",
@@ -13718,8 +13722,9 @@
     "sentiment": "Negative",
     "meanings_count": 1,
     "translations": [
-      "глutton",
-      "жмот"
+      "обжора",
+      "чревоугодник",
+      "ненасытный"
     ],
     "synonyms": [
       "gourmand",
@@ -13886,9 +13891,9 @@
     "sentiment": "Negative",
     "meanings_count": 1,
     "translations": [
-      "procrastинирующий",
-      "откладывающий дело",
-      "тормозящий"
+      "медлительный",
+      "затягивающий",
+      "неторопливый"
     ],
     "synonyms": [
       "delaying",
@@ -14017,8 +14022,9 @@
     "sentiment": "Negative",
     "meanings_count": 1,
     "translations": [
-      "procrastинировать",
-      "избегать ответа"
+      "тянуть время",
+      "медлить",
+      "выжидать"
     ],
     "synonyms": [
       "delay",
@@ -14356,9 +14362,9 @@
     "sentiment": "Negative",
     "meanings_count": 1,
     "translations": [
-      "неверящий",
-      "сceptический",
-      "не верящий"
+      "недоверчивый",
+      "скептический",
+      "сомневающийся"
     ],
     "synonyms": [
       "doubtful",
@@ -14450,9 +14456,9 @@
     "sentiment": "Neutral",
     "meanings_count": 1,
     "translations": [
-      "бarrage",
-      "обстрел",
-      "поток"
+      "шквал",
+      "заграждение",
+      "град (вопросов и т.п.)"
     ],
     "synonyms": [
       "bombardment",
@@ -14469,9 +14475,9 @@
     "sentiment": "Negative",
     "meanings_count": 1,
     "translations": [
-      "агрессивный",
       "воинственный",
-      "combatивный"
+      "агрессивный",
+      "враждебный"
     ],
     "synonyms": [
       "aggressive",
@@ -14546,8 +14552,8 @@
     "meanings_count": 1,
     "translations": [
       "спорный",
-      "контroversial",
-      "непримиримый"
+      "дискуссионный",
+      "противоречивый"
     ],
     "synonyms": [
       "disputatious",
@@ -14785,7 +14791,7 @@
     "common_mistake": ""
   },
   {
-    "word": "palliate, palliative",
+    "word": "palliate",
     "transcription": "/ˈpæl.i.ət/",
     "sentiment": "Neutral",
     "meanings_count": 1,

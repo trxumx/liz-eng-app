@@ -476,7 +476,7 @@
   },
   "emblem": {
     "translations": [
-      "эмblem",
+      "эмблема",
       "символ",
       "знак"
     ],
@@ -1412,9 +1412,9 @@
   },
   "voluptuous": {
     "translations": [
-      "пышный",
+      "чувственный",
       "сладострастный",
-      "сensualный"
+      "роскошный"
     ],
     "synonyms": [
       "curvaceous",
@@ -2821,8 +2821,8 @@
   },
   "dogmatic": {
     "translations": [
-      "dogматический",
-      "убежденный",
+      "догматический",
+      "категоричный",
       "непреклонный"
     ],
     "synonyms": [
@@ -3170,8 +3170,9 @@
   },
   "idealize": {
     "translations": [
-      "idealизировать",
-      "романтизировать"
+      "идеализировать",
+      "превозносить",
+      "возвышать"
     ],
     "synonyms": [
       "glorify",
@@ -3614,9 +3615,9 @@
   },
   "pervasive": {
     "translations": [
-      "пervasивный",
-      "распространенный",
-      "повсеместный"
+      "повсеместный",
+      "всепроникающий",
+      "распространённый"
     ],
     "synonyms": [
       "widespread",
@@ -3722,8 +3723,8 @@
   "surrendered": {
     "translations": [
       "сдался",
-      "побросал оружие",
-      "сurrendered"
+      "капитулировал",
+      "уступил"
     ],
     "synonyms": [
       "yielded",
@@ -4831,8 +4832,9 @@
   },
   "unintended": {
     "translations": [
-      "не故意插入的中文，我会移除它。intended",
-      "непреднамеренный"
+      "непреднамеренный",
+      "случайный",
+      "неумышленный"
     ],
     "synonyms": [
       "accidental",
@@ -5180,8 +5182,8 @@
   "regret": {
     "translations": [
       "сожалеть",
-      "регret",
-      "пожалеть"
+      "жалеть",
+      "раскаиваться"
     ],
     "synonyms": [
       "sorry about",
@@ -5315,22 +5317,6 @@
     "sentiment": "Positive",
     "meanings_count": 1,
     "theme": "Evaluation",
-    "common_mistake": ""
-  },
-  "verisimilitude in": {
-    "translations": [
-      "реалистичность",
-      "правдоподобие"
-    ],
-    "synonyms": [
-      "realism",
-      "plausibility"
-    ],
-    "example": "The author's vivid descriptions added <mark>verisimilitude</mark> to the story.",
-    "transcription": "/ˌvɛr.ɪ.sɪˈmɪl.ɪ.tud ɪn/",
-    "sentiment": "Neutral",
-    "meanings_count": 1,
-    "theme": "Knowledge & Science",
     "common_mistake": ""
   },
   "collect": {
@@ -5547,9 +5533,9 @@
   },
   "unimportant": {
     "translations": [
+      "неважный",
       "незначительный",
-      "бесполезный",
-      "неimportant"
+      "несущественный"
     ],
     "synonyms": [
       "insignificant",
@@ -7686,9 +7672,9 @@
   },
   "rhetorician": {
     "translations": [
-      "риторик",
-      "рhetорик",
-      "рhetорик"
+      "ритор",
+      "оратор",
+      "красноречивый человек"
     ],
     "synonyms": [
       "orator",
@@ -7808,9 +7794,9 @@
   },
   "bombastic": {
     "translations": [
-      "bombастический",
-      "пышный",
-      "надутый"
+      "напыщенный",
+      "высокопарный",
+      "хвастливый"
     ],
     "synonyms": [
       "grandiose",
@@ -9275,9 +9261,9 @@
   },
   "foolhardy": {
     "translations": [
-      "рashливый",
-      "необдуманный",
-      "безрассудный"
+      "безрассудный",
+      "опрометчивый",
+      "отчаянный"
     ],
     "synonyms": [
       "reckless",
@@ -9293,9 +9279,9 @@
   },
   "grandiose": {
     "translations": [
-      "величественный",
       "грандиозный",
-      "мagnificent"
+      "величественный",
+      "помпезный"
     ],
     "synonyms": [
       "magnificent",
@@ -9486,7 +9472,8 @@
   },
   "precocious": {
     "translations": [
-      "prematureный",
+      "не по годам развитый",
+      "преждевременный",
       "ранний"
     ],
     "synonyms": [
@@ -10195,9 +10182,9 @@
   },
   "penurious": {
     "translations": [
-      "скупый",
-      "экономный до жадности",
-      "стingy"
+      "скупой",
+      "нищенский",
+      "бедный"
     ],
     "synonyms": [
       "stingy",
@@ -11458,8 +11445,8 @@
   },
   "tirade": {
     "translations": [
-      "выступление с критикой",
-      "диatribа",
+      "тирада",
+      "гневная речь",
       "обличительная речь"
     ],
     "synonyms": [
@@ -12232,8 +12219,9 @@
   },
   "germinate": {
     "translations": [
-      "germinировать",
-      "прорастать"
+      "прорастать",
+      "давать всходы",
+      "зарождаться"
     ],
     "synonyms": [
       "sprout",
@@ -12972,8 +12960,9 @@
   },
   "glutton": {
     "translations": [
-      "глutton",
-      "жмот"
+      "обжора",
+      "чревоугодник",
+      "ненасытный"
     ],
     "synonyms": [
       "gourmand",
@@ -13131,9 +13120,9 @@
   },
   "dilatory": {
     "translations": [
-      "procrastинирующий",
-      "откладывающий дело",
-      "тормозящий"
+      "медлительный",
+      "затягивающий",
+      "неторопливый"
     ],
     "synonyms": [
       "delaying",
@@ -13255,8 +13244,9 @@
   },
   "temporize": {
     "translations": [
-      "procrastинировать",
-      "избегать ответа"
+      "тянуть время",
+      "медлить",
+      "выжидать"
     ],
     "synonyms": [
       "delay",
@@ -13576,9 +13566,9 @@
   },
   "incredulous": {
     "translations": [
-      "неверящий",
-      "сceptический",
-      "не верящий"
+      "недоверчивый",
+      "скептический",
+      "сомневающийся"
     ],
     "synonyms": [
       "doubtful",
@@ -13665,9 +13655,9 @@
   },
   "barrage": {
     "translations": [
-      "бarrage",
-      "обстрел",
-      "поток"
+      "шквал",
+      "заграждение",
+      "град (вопросов и т.п.)"
     ],
     "synonyms": [
       "bombardment",
@@ -13683,9 +13673,9 @@
   },
   "belligerent": {
     "translations": [
-      "агрессивный",
       "воинственный",
-      "combatивный"
+      "агрессивный",
+      "враждебный"
     ],
     "synonyms": [
       "aggressive",
@@ -13756,8 +13746,8 @@
   "contentious": {
     "translations": [
       "спорный",
-      "контroversial",
-      "непримиримый"
+      "дискуссионный",
+      "противоречивый"
     ],
     "synonyms": [
       "disputatious",
@@ -13985,23 +13975,6 @@
     "theme": "Other",
     "common_mistake": ""
   },
-  "palliate, palliative": {
-    "translations": [
-      "уменьшить симптомы",
-      "смягчить",
-      "облегчить"
-    ],
-    "synonyms": [
-      "ease",
-      "alleviate",
-      "mitigate"
-    ],
-    "example": "The medicine only <mark>palliates</mark> the symptoms, but doesn't cure them.",
-    "transcription": "/ˈpæl.i.ət/",
-    "sentiment": "Neutral",
-    "meanings_count": 1,
-    "common_mistake": ""
-  },
   "precarious": {
     "translations": [
       "неустойчивый",
@@ -14105,6 +14078,39 @@
     "sentiment": "Positive",
     "meanings_count": 1,
     "theme": "State & Well-being",
+    "common_mistake": ""
+  },
+  "verisimilitude": {
+    "translations": [
+      "реалистичность",
+      "правдоподобие"
+    ],
+    "synonyms": [
+      "realism",
+      "plausibility"
+    ],
+    "example": "The author's vivid descriptions added <mark>verisimilitude</mark> to the story.",
+    "transcription": "/ˌvɛr.ɪ.sɪˈmɪl.ɪ.tud ɪn/",
+    "sentiment": "Neutral",
+    "meanings_count": 1,
+    "theme": "Knowledge & Science",
+    "common_mistake": ""
+  },
+  "palliate": {
+    "translations": [
+      "уменьшить симптомы",
+      "смягчить",
+      "облегчить"
+    ],
+    "synonyms": [
+      "ease",
+      "alleviate",
+      "mitigate"
+    ],
+    "example": "The medicine only <mark>palliates</mark> the symptoms, but doesn't cure them.",
+    "transcription": "/ˈpæl.i.ət/",
+    "sentiment": "Neutral",
+    "meanings_count": 1,
     "common_mistake": ""
   }
 }
