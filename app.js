@@ -1,8 +1,20 @@
 (function () {
   "use strict";
 
-  // ---------- Storage ----------
-  const STORAGE_KEY = "liz-vocab:v1";
+  // ---------- Profiles & Storage ----------
+  const PROFILES = {
+    liza: { emoji: "💗", name: "Liza" },
+    igor: { emoji: "⚡", name: "Igor" },
+  };
+  const ACTIVE_PROFILE_KEY = "liz-vocab:active-profile";
+  const STORAGE_PREFIX = "liz-vocab:v1";
+
+  let activeProfile = localStorage.getItem(ACTIVE_PROFILE_KEY);
+  if (!PROFILES[activeProfile]) activeProfile = null;
+
+  function storageKey() {
+    return activeProfile ? `${STORAGE_PREFIX}:${activeProfile}` : null;
+  }
 
   function defaultStore() {
     return {
@@ -12,8 +24,10 @@
   }
 
   function loadStorage() {
+    const key = storageKey();
+    if (!key) return defaultStore();
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(key);
       if (!raw) return defaultStore();
       const parsed = JSON.parse(raw);
       const def = defaultStore();
@@ -28,8 +42,10 @@
   }
 
   function saveStorage() {
+    const key = storageKey();
+    if (!key) return; // no profile selected; nothing to save
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+      localStorage.setItem(key, JSON.stringify(store));
     } catch (e) {
       console.error("Failed to save storage", e);
     }
@@ -131,22 +147,77 @@
     });
   });
 
+  // ---------- Profile picker (welcome) ----------
+  const profileBtns = document.querySelectorAll(".profile-btn");
+  const profilePill = document.getElementById("profile-pill");
+  const profilePillEmoji = document.getElementById("profile-pill-emoji");
+  const profilePillName = document.getElementById("profile-pill-name");
+
+  function refreshProfileChips() {
+    profileBtns.forEach((b) => {
+      b.setAttribute("aria-pressed", b.dataset.profile === activeProfile ? "true" : "false");
+    });
+    if (activeProfile && PROFILES[activeProfile]) {
+      profilePillEmoji.textContent = PROFILES[activeProfile].emoji;
+      profilePillName.textContent = PROFILES[activeProfile].name;
+    }
+    refreshStartButton();
+  }
+
+  function refreshStartButton() {
+    if (!activeProfile) {
+      startBtn.disabled = true;
+      startBtn.dataset.hover = "pick a profile first";
+    } else if (activeProfile === "liza") {
+      startBtn.disabled = false;
+      startBtn.dataset.hover = "hi lizzy <3";
+    } else {
+      startBtn.disabled = false;
+      startBtn.dataset.hover = "let's go";
+    }
+    // Reset visible label in case it was showing a stale hover text
+    if (!startBtn.matches(":hover") && document.activeElement !== startBtn) {
+      startLabel.textContent = startBtn.dataset.default;
+    }
+  }
+
+  function setActiveProfile(name) {
+    if (!PROFILES[name]) return;
+    activeProfile = name;
+    localStorage.setItem(ACTIVE_PROFILE_KEY, name);
+    store = loadStorage();
+    refreshProfileChips();
+    if (view === "home") renderHome();
+  }
+
+  profileBtns.forEach((b) => {
+    b.addEventListener("click", () => setActiveProfile(b.dataset.profile));
+  });
+
+  // Reflect any saved profile right away (don't wait for dictionary fetch).
+  refreshProfileChips();
+
   // ---------- Welcome / easter egg ----------
   const startBtn = document.getElementById("start-btn");
   const startLabel = startBtn.querySelector(".start-btn-label");
   startBtn.addEventListener("mouseenter", () => {
+    if (startBtn.disabled) return;
     startLabel.textContent = startBtn.dataset.hover;
   });
   startBtn.addEventListener("mouseleave", () => {
     startLabel.textContent = startBtn.dataset.default;
   });
   startBtn.addEventListener("focus", () => {
+    if (startBtn.disabled) return;
     startLabel.textContent = startBtn.dataset.hover;
   });
   startBtn.addEventListener("blur", () => {
     startLabel.textContent = startBtn.dataset.default;
   });
-  startBtn.addEventListener("click", () => show("home"));
+  startBtn.addEventListener("click", () => {
+    if (!activeProfile) return;
+    show("home");
+  });
 
   // ---------- Deck picker ----------
   const deckChips = document.getElementById("deck-chips");
@@ -742,6 +813,7 @@
       words = Array.isArray(data) ? data : [];
       counterTotal.textContent = String(words.length);
       populateDeckChips();
+      refreshProfileChips();
       renderHome();
     })
     .catch((err) => {

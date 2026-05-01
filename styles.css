@@ -91,6 +91,90 @@ html, body {
 .start-btn:hover { background: #2d2d2d; transform: translateY(-1px); }
 .start-btn:active { transform: translateY(0); }
 .start-btn-label { display: inline-block; pointer-events: none; }
+.start-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.start-btn:disabled:hover { background: var(--ink); transform: none; }
+
+/* ---------- Profile picker (welcome) ---------- */
+.profile-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.profile-picker-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  font-weight: 600;
+}
+
+.profile-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.profile-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 28px;
+  min-width: 110px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+.profile-btn:hover { background: var(--surface-2); border-color: #d8d2c4; transform: translateY(-1px); }
+.profile-btn[aria-pressed="true"] {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.profile-emoji {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.profile-name {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Profile pill (home header) ---------- */
+.profile-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--ink);
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.profile-pill:hover { background: var(--surface-2); border-color: #d8d2c4; }
+
+.profile-pill-emoji {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.profile-pill-name {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
 
 /* ---------- Deck picker (welcome) ---------- */
 .deck-picker {

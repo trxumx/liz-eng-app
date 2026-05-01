@@ -14,13 +14,27 @@
           <h1 class="title">English Vocabulary</h1>
           <p class="subtitle">A little study deck.</p>
 
+          <div class="profile-picker">
+            <div class="profile-picker-label">Who's studying?</div>
+            <div class="profile-buttons" role="radiogroup" aria-label="Profile">
+              <button class="profile-btn" data-profile="liza" type="button">
+                <span class="profile-emoji">💗</span>
+                <span class="profile-name">Liza</span>
+              </button>
+              <button class="profile-btn" data-profile="igor" type="button">
+                <span class="profile-emoji">⚡</span>
+                <span class="profile-name">Igor</span>
+              </button>
+            </div>
+          </div>
+
           <div class="deck-picker">
             <div class="deck-picker-label">Choose a deck</div>
             <div class="deck-chips" id="deck-chips" role="radiogroup" aria-label="Deck"></div>
             <div class="deck-picker-meta" id="deck-meta">—</div>
           </div>
 
-          <button id="start-btn" class="start-btn" data-default="Start studying" data-hover="hi lizzy &lt;3">
+          <button id="start-btn" class="start-btn" data-default="Start studying" data-hover="hi lizzy &lt;3" disabled>
             <span class="start-btn-label">Start studying</span>
           </button>
         </div>
@@ -29,7 +43,10 @@
       <!-- 2. Home menu -->
       <section data-view="home" class="screen hidden">
         <header class="page-header">
-          <div class="brand">Vocab</div>
+          <button class="profile-pill" id="profile-pill" data-go="welcome" aria-label="Switch profile">
+            <span class="profile-pill-emoji" id="profile-pill-emoji">💗</span>
+            <span class="profile-pill-name" id="profile-pill-name">Liza</span>
+          </button>
           <div id="home-progress" class="page-sub"></div>
         </header>
 
