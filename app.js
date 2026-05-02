@@ -147,6 +147,10 @@
     });
   });
 
+  // ---------- Welcome DOM (declared early so profile callbacks can use it) ----------
+  const startBtn = document.getElementById("start-btn");
+  const startLabel = startBtn.querySelector(".start-btn-label");
+
   // ---------- Profile picker (welcome) ----------
   const profileBtns = document.querySelectorAll(".profile-btn");
   const profilePill = document.getElementById("profile-pill");
@@ -194,12 +198,7 @@
     b.addEventListener("click", () => setActiveProfile(b.dataset.profile));
   });
 
-  // Reflect any saved profile right away (don't wait for dictionary fetch).
-  refreshProfileChips();
-
   // ---------- Welcome / easter egg ----------
-  const startBtn = document.getElementById("start-btn");
-  const startLabel = startBtn.querySelector(".start-btn-label");
   startBtn.addEventListener("mouseenter", () => {
     if (startBtn.disabled) return;
     startLabel.textContent = startBtn.dataset.hover;
@@ -218,6 +217,9 @@
     if (!activeProfile) return;
     show("home");
   });
+
+  // Reflect any saved profile + initial start-button state on first paint.
+  refreshProfileChips();
 
   // ---------- Deck picker ----------
   const deckChips = document.getElementById("deck-chips");
